@@ -1,22 +1,8 @@
-import sqlite3
 import uuid
 import secrets
 import base64
 
-# connect to database
-conn = sqlite3.connect("keys.db")
-# create a cursor
-c = conn.cursor()
-
-c.execute("""CREATE TABLE KEYS(
-          key_id text,
-          key text
-          )
-        """)
-
-# commit the command and close the connection
-conn.commit()
-conn.close()
+key_store = {}
 
 def generate_key(size_bits = 256):
     key_bytes = secrets.token_bytes(size_bits//8)

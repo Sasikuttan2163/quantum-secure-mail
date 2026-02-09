@@ -32,7 +32,7 @@ async def get_key(slave_SAE_ID: str, request: KeyRequest):
     for _ in range(num_keys):
         key_id, key = generate_key(key_size)
         keyRequest = {
-            "key_id": key,
+            "key_ID": key_id,
             "key": key
         }
 
@@ -58,7 +58,7 @@ async def get_key_with_ids(master_SAE_ID: str, request: KeyIDsRequest):
         if k_id in key_store:
             key_data = key_store.pop(k_id)
             keyRequest = {
-                "key_id": k_id,
+                "key_ID": k_id,
                 "key": key_data["key"]
             }
             response_keys.append(keyRequest)

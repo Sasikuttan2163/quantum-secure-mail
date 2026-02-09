@@ -18,12 +18,12 @@ class KeyRequest(BaseModel):
     number: Optional[int] = 1
     size: Optional[int] = 1024
 
-class KeyContaniner(BaseModel):
+class KeyContainer(BaseModel):
     key_ID: str
     key: str
 
 class KeyResponse(BaseModel):
-    keys: List[KeyContaniner]
+    keys: List[KeyContainer]
 
 class KeyID(BaseModel):
     key_ID: str

@@ -1,8 +1,21 @@
 from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from models import StatusResponse, KeyResponse, KeyRequest, KeyIDsRequest
 from store_keys import key_store, generate_key
 
 app = FastAPI(title="QKD KME Simulator", version="1.0")
+
+# add CORS
+origins = ["*"]
+methods = ["*"]
+headers = ["*"]
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins = origins,
+    allow_credentials = True,
+    allow_methods = methods,
+    allow_headers = headers
+)
 
 # Get Status
 @app.get("/api/v1/keys/{slave_SAE_ID}/status", response_model=StatusResponse)

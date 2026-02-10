@@ -9,7 +9,7 @@ def otp_encryption(plaintext):
     key_length = pt_length*8
 
     # get key and key_ID from qkd simulator
-    api_url="/api/v1/keys/1001/enc_keys"
+    api_url="http://localhost:8000/api/v1/keys/1001/enc_keys"
     get_keys = {
         "number": 1,
         "size": key_length
@@ -29,11 +29,11 @@ def otp_encryption(plaintext):
 def otp_decryption(ciphertext, key_ID):
 
     # determine key length
-    ct_bytes = ciphertext.encode('utf-8')
+    ct_bytes = base64.b64decode(ciphertext)
     ct_length = len(ct_bytes)
 
     # get key and key_ID from qkd simulator
-    api_url="/api/v1/keys/1001/dec_keys"
+    api_url="http://localhost:8000/api/v1/keys/1001/dec_keys"
     get_key_with_keyID = {
         "key_IDs": [
             {
@@ -49,6 +49,6 @@ def otp_decryption(ciphertext, key_ID):
 
     # obtain the plaintext from the ciphertext
     plaintext_bytes = bytes([ct_bytes[i] ^ key_bytes[i] for i in range(ct_length)])
-    plaintext_b64 = base64.b64encode(plaintext_bytes).decode('utf-8')
+    plaintext = plaintext_bytes.decode('utf-8')
 
-    return plaintext_b64
+    return plaintext

@@ -1,2 +1,4 @@
 # Use Python 3.12 for the project
 fastapi[standard]
+requests
+pycryptodome

@@ -11,6 +11,10 @@ email-validator
 
 # Environment configuration (optional but recommended)
 python-dotenv
+
+# Cryptography libraries
+pycryptodome
+kyber-py
 fastapi[standard]
 requests
 pycryptodome

@@ -30,15 +30,60 @@ const SecurityLabel = ({ level }) => {
   return <span className={`text-xs ${color}`}>{text}</span>;
 };
 
+// Helper to safely extract sender name from email
+const getSenderName = (from) => {
+  if (!from) return 'Unknown';
+  if (typeof from === 'object' && from.name) return from.name;
+  if (typeof from === 'string') {
+    // Parse "Name <email>" format
+    const name = from.replace(/<.+?>/, '').trim();
+    return name || from.split('@')[0] || 'Unknown';
+  }
+  return 'Unknown';
+};
+
+// Helper to safely extract sender email from email
+const getSenderEmail = (from) => {
+  if (!from) return '';
+  if (typeof from === 'object' && from.email) return from.email;
+  if (typeof from === 'string') {
+    const match = from.match(/<(.+?)>/);
+    return match ? match[1] : from;
+  }
+  return '';
+};
+
 const formatEmailDate = (dateString) => {
-  const date = parseISO(dateString);
-  if (isToday(date)) {
-    return format(date, 'h:mm a');
+  try {
+    if (!dateString) {
+      return 'Unknown';
+    }
+    
+    // Try to parse as ISO format first
+    let date;
+    try {
+      date = parseISO(dateString);
+    } catch {
+      // If ISO parsing fails, try creating date directly
+      date = new Date(dateString);
+    }
+    
+    // Check if date is valid
+    if (isNaN(date.getTime())) {
+      return 'Invalid date';
+    }
+    
+    if (isToday(date)) {
+      return format(date, 'h:mm a');
+    }
+    if (isYesterday(date)) {
+      return 'Yesterday';
+    }
+    return format(date, 'MMM d');
+  } catch (error) {
+    console.error('Error formatting date:', dateString, error);
+    return 'Unknown';
   }
-  if (isYesterday(date)) {
-    return 'Yesterday';
-  }
-  return format(date, 'MMM d');
 };
 
 const EmailListItem = ({ email, isSelected, onClick }) => {
@@ -78,7 +123,7 @@ const EmailListItem = ({ email, isSelected, onClick }) => {
         <div className="flex-1 min-w-0">
           <div className="flex items-center justify-between gap-2 mb-1">
             <span className={`text-sm truncate ${!email.read ? 'font-semibold text-gray-900 dark:text-white' : 'text-gray-700 dark:text-gray-300'}`}>
-              {email.from.name}
+              {getSenderName(email.from)}
             </span>
             <div className="flex items-center gap-2 flex-shrink-0">
               {email.hasAttachments && (
@@ -128,12 +173,16 @@ const EmailList = () => {
     // Filter by search query
     if (searchQuery) {
       const query = searchQuery.toLowerCase();
-      result = result.filter(email =>
-        email.subject.toLowerCase().includes(query) ||
-        email.from.name.toLowerCase().includes(query) ||
-        email.from.email.toLowerCase().includes(query) ||
-        email.preview.toLowerCase().includes(query)
-      );
+      result = result.filter(email => {
+        const senderName = getSenderName(email.from).toLowerCase();
+        const senderEmail = getSenderEmail(email.from).toLowerCase();
+        return (
+          email.subject.toLowerCase().includes(query) ||
+          senderName.includes(query) ||
+          senderEmail.includes(query) ||
+          (email.preview && email.preview.toLowerCase().includes(query))
+        );
+      });
     }
 
     // Filter by security level

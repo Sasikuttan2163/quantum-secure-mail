@@ -295,8 +295,26 @@ const useStore = create(
         if (window.electronAPI) {
           const result = await window.electronAPI.fetchEmails(folder);
           if (result.success) {
+            // Map backend email format to frontend format
+            const mappedEmails = result.emails.map(email => ({
+              id: email.id,
+              from: email.from || email.from_addr,
+              to: email.to,
+              subject: email.subject,
+              preview: email.body ? email.body.substring(0, 150) + '...' : '',
+              body: email.body,
+              date: email.date,
+              read: email.read || false,
+              starred: email.starred || false,
+              securityLevel: email.security_level ? parseInt(email.security_level.replace('L', '')) : 4,
+              keyId: email.key_id,
+              isEncrypted: email.is_encrypted || false,
+              hasAttachments: email.attachments?.length > 0 || false,
+              attachments: email.attachments || [],
+            }));
+            
             set((state) => {
-              state.emails[folder] = result.emails;
+              state.emails[folder] = mappedEmails;
               state.isLoading = false;
             });
             return;
@@ -312,6 +330,51 @@ const useStore = create(
       } catch (error) {
         set((state) => { state.isLoading = false; });
         console.error('Failed to fetch emails:', error);
+      }
+    },
+    
+    decryptEmail: async (email) => {
+      try {
+        if (!email.isEncrypted) {
+          return email; // Already decrypted or not encrypted
+        }
+        
+        if (window.electronAPI) {
+          const result = await window.electronAPI.decryptEmail(email.id, get().selectedFolder);
+          if (result.success && result.decryptedBody) {
+            // Update email with decrypted body
+            const decryptedEmail = {
+              ...email,
+              body: result.decryptedBody,
+              isDecrypted: true,
+            };
+            
+            // Update in store
+            set((state) => {
+              const folder = state.selectedFolder;
+              const index = state.emails[folder].findIndex(e => e.id === email.id);
+              if (index !== -1) {
+                state.emails[folder][index] = decryptedEmail;
+              }
+              // Update selected email if it's the same one
+              if (state.selectedEmail?.id === email.id) {
+                state.selectedEmail = decryptedEmail;
+              }
+            });
+            
+            return decryptedEmail;
+          }
+        }
+        
+        return email;
+      } catch (error) {
+        console.error('Failed to decrypt email:', error);
+        get().addNotification({
+          type: 'error',
+          title: 'Decryption Failed',
+          message: 'Unable to decrypt this email. Key may be missing or expired.',
+        });
+        return email;
       }
     },
 
@@ -410,10 +473,15 @@ const useStore = create(
       get().fetchEmails(folder);
     },
 
-    setSelectedEmail: (email) => {
+    setSelectedEmail: async (email) => {
       set((state) => { state.selectedEmail = email; });
       if (email && !email.read) {
         get().markAsRead(email.id);
+      }
+      
+      // Auto-decrypt if encrypted and not already decrypted
+      if (email && email.isEncrypted && !email.isDecrypted) {
+        await get().decryptEmail(email);
       }
     },
 

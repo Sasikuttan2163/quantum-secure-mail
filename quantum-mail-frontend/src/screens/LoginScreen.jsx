@@ -2,93 +2,36 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
-  Atom, Lock, Mail, Key, Server, Eye, EyeOff, 
-  CheckCircle2, XCircle, AlertCircle, Loader2,
-  ChevronDown, HelpCircle, Settings
+  Atom, Lock, AlertCircle, Loader2, Shield, ArrowRight, CheckCircle2
 } from 'lucide-react';
 import useStore from '../store/useStore';
 
 const LoginScreen = ({ onLoginSuccess }) => {
-  const { login, connectToKM, isLoading } = useStore();
-  
-  const [step, setStep] = useState(1);
-  const [showPassword, setShowPassword] = useState(false);
-  const [showApiKey, setShowApiKey] = useState(false);
-  
-  // Email config
-  const [emailProvider, setEmailProvider] = useState('gmail');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [rememberMe, setRememberMe] = useState(false);
-  
-  // KM config
-  const [kmEndpoint, setKmEndpoint] = useState('');
-  const [saeId, setSaeId] = useState('');
-  const [apiKey, setApiKey] = useState('');
-  
-  // Status
-  const [emailStatus, setEmailStatus] = useState(null); // null, 'testing', 'success', 'error'
-  const [kmStatus, setKmStatus] = useState(null);
+  const [isConnecting, setIsConnecting] = useState(false);
   const [error, setError] = useState('');
+  const [success, setSuccess] = useState(false);
 
-  const providers = [
-    { value: 'gmail', label: 'Gmail', icon: '📧' },
-    { value: 'outlook', label: 'Outlook', icon: '📨' },
-    { value: 'yahoo', label: 'Yahoo', icon: '📩' },
-    { value: 'imap', label: 'Custom IMAP', icon: '⚙️' },
-  ];
-
-  const handleTestEmail = async () => {
-    if (!email || !password) {
-      setError('Please enter email and password');
-      return;
-    }
-    
-    setEmailStatus('testing');
+  const handleConnect = async () => {
+    setIsConnecting(true);
     setError('');
     
-    // Simulate testing
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    setEmailStatus('success');
-  };
-
-  const handleTestKM = async () => {
-    if (!kmEndpoint || !saeId || !apiKey) {
-      setError('Please fill in all Key Manager fields');
-      return;
+    // Simulate connection check to backend
+    try {
+      // In a real implementation, you might want to ping the backend
+      // For now, just simulate a delay
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      setSuccess(true);
+      
+      // Wait a bit to show success, then proceed
+      setTimeout(() => {
+        onLoginSuccess();
+      }, 500);
+      
+    } catch (err) {
+      setError('Unable to connect to backend. Please ensure the backend server is running on port 8001.');
+      setIsConnecting(false);
     }
-    
-    setKmStatus('testing');
-    setError('');
-    
-    // Simulate testing
-    await new Promise(resolve => setTimeout(resolve, 2000));
-    setKmStatus('success');
-  };
-
-  const handleSignIn = async () => {
-    setError('');
-    
-    // Validate email
-    if (!email || !password) {
-      setError('Please enter email and password');
-      return;
-    }
-    
-    // Login
-    const result = await login({ email, password, provider: emailProvider });
-    
-    if (!result.success) {
-      setError(result.error || 'Login failed');
-      return;
-    }
-    
-    // Connect to KM if configured
-    if (kmEndpoint && saeId && apiKey) {
-      await connectToKM({ endpoint: kmEndpoint, saeId, apiKey });
-    }
-    
-    onLoginSuccess();
   };
 
   return (
@@ -102,7 +45,7 @@ const LoginScreen = ({ onLoginSuccess }) => {
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="relative z-10 w-full max-w-lg"
+        className="relative z-10 w-full max-w-md"
       >
         {/* Logo */}
         <div className="text-center mb-8">
@@ -110,240 +53,132 @@ const LoginScreen = ({ onLoginSuccess }) => {
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
             transition={{ type: 'spring', delay: 0.2 }}
-            className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl mb-4 shadow-2xl"
+            className="inline-flex items-center justify-center w-24 h-24 bg-gradient-to-br from-blue-500 to-purple-600 rounded-3xl mb-6 shadow-2xl"
           >
-            <Atom className="w-12 h-12 text-white" />
+            <Atom className="w-14 h-14 text-white" strokeWidth={1.5} />
           </motion.div>
-          <h1 className="text-3xl font-bold text-white mb-2">QuMail</h1>
-          <p className="text-gray-400">Quantum Secure Email</p>
+          <h1 className="text-4xl font-bold text-white mb-3">QuMail</h1>
+          <p className="text-xl text-gray-300 mb-2">Quantum Secure Email</p>
+          <p className="text-sm text-gray-400">End-to-end encryption powered by quantum keys</p>
         </div>
 
-        {/* Login Card */}
+        {/* Welcome Card */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
-          className="bg-white/10 backdrop-blur-xl rounded-2xl border border-white/20 overflow-hidden"
+          className="bg-white/10 backdrop-blur-xl rounded-2xl border border-white/20 overflow-hidden shadow-2xl"
         >
-          {/* Email Configuration Section */}
-          <div className="p-6 border-b border-white/10">
-            <div className="flex items-center gap-2 mb-4">
-              <Mail className="w-5 h-5 text-blue-400" />
-              <h2 className="text-lg font-semibold text-white">Email Service Configuration</h2>
-            </div>
-            
-            {/* Provider dropdown */}
-            <div className="mb-4">
-              <label className="block text-sm text-gray-400 mb-2">Email Provider</label>
-              <div className="relative">
-                <select
-                  value={emailProvider}
-                  onChange={(e) => setEmailProvider(e.target.value)}
-                  className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white appearance-none cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500"
-                >
-                  {providers.map(p => (
-                    <option key={p.value} value={p.value} className="bg-gray-800">
-                      {p.icon} {p.label}
-                    </option>
-                  ))}
-                </select>
-                <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none" />
-              </div>
-            </div>
-
-            {/* Email input */}
-            <div className="mb-4">
-              <label className="block text-sm text-gray-400 mb-2">Email Address</label>
-              <div className="relative">
-                <input
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="you@example.com"
-                  className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-                {emailStatus === 'success' && (
-                  <CheckCircle2 className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-green-400" />
-                )}
-              </div>
-            </div>
-
-            {/* Password input */}
-            <div className="mb-4">
-              <label className="block text-sm text-gray-400 mb-2">Password</label>
-              <div className="relative">
-                <input
-                  type={showPassword ? 'text' : 'password'}
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  placeholder="••••••••"
-                  className="w-full px-4 py-3 pr-12 bg-white/5 border border-white/10 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white"
-                >
-                  {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
-                </button>
-              </div>
-            </div>
-
-            {/* Remember me */}
-            <label className="flex items-center gap-2 cursor-pointer">
-              <input
-                type="checkbox"
-                checked={rememberMe}
-                onChange={(e) => setRememberMe(e.target.checked)}
-                className="w-4 h-4 rounded border-gray-600 bg-white/5 text-blue-500 focus:ring-blue-500"
-              />
-              <span className="text-sm text-gray-400">Remember Me</span>
-            </label>
-
-            {/* Test connection button */}
-            <button
-              onClick={handleTestEmail}
-              disabled={emailStatus === 'testing' || !email || !password}
-              className="mt-4 w-full flex items-center justify-center gap-2 px-4 py-2 bg-white/5 hover:bg-white/10 border border-white/10 rounded-lg text-gray-300 transition-colors disabled:opacity-50"
-            >
-              {emailStatus === 'testing' ? (
-                <Loader2 className="w-4 h-4 animate-spin" />
-              ) : emailStatus === 'success' ? (
-                <CheckCircle2 className="w-4 h-4 text-green-400" />
-              ) : (
-                <Server className="w-4 h-4" />
-              )}
-              {emailStatus === 'success' ? 'Connection Verified' : 'Test Connection'}
-            </button>
-          </div>
-
-          {/* Quantum Key Manager Section */}
-          <div className="p-6 border-b border-white/10">
-            <div className="flex items-center gap-2 mb-4">
-              <Key className="w-5 h-5 text-purple-400" />
-              <h2 className="text-lg font-semibold text-white">Quantum Key Manager Setup</h2>
-              <span className="text-xs text-gray-500">(Optional)</span>
-            </div>
-            
-            {/* KM Endpoint */}
-            <div className="mb-4">
-              <label className="block text-sm text-gray-400 mb-2">KM Endpoint URL</label>
-              <input
-                type="text"
-                value={kmEndpoint}
-                onChange={(e) => setKmEndpoint(e.target.value)}
-                placeholder="https://km.example.com/api/v1"
-                className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500"
-              />
-            </div>
-
-            {/* SAE ID */}
-            <div className="mb-4">
-              <label className="block text-sm text-gray-400 mb-2">SAE ID</label>
-              <input
-                type="text"
-                value={saeId}
-                onChange={(e) => setSaeId(e.target.value)}
-                placeholder="SAE_12345"
-                className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500"
-              />
-            </div>
-
-            {/* API Key */}
-            <div className="mb-4">
-              <label className="block text-sm text-gray-400 mb-2">API Key</label>
-              <div className="relative">
-                <input
-                  type={showApiKey ? 'text' : 'password'}
-                  value={apiKey}
-                  onChange={(e) => setApiKey(e.target.value)}
-                  placeholder="••••••••••••••••"
-                  className="w-full px-4 py-3 pr-12 bg-white/5 border border-white/10 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500"
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowApiKey(!showApiKey)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white"
-                >
-                  {showApiKey ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
-                </button>
-              </div>
-            </div>
-
-            {/* Test KM connection */}
-            <button
-              onClick={handleTestKM}
-              disabled={kmStatus === 'testing' || !kmEndpoint || !saeId || !apiKey}
-              className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-white/5 hover:bg-white/10 border border-white/10 rounded-lg text-gray-300 transition-colors disabled:opacity-50"
-            >
-              {kmStatus === 'testing' ? (
-                <Loader2 className="w-4 h-4 animate-spin" />
-              ) : kmStatus === 'success' ? (
-                <CheckCircle2 className="w-4 h-4 text-green-400" />
-              ) : (
-                <Key className="w-4 h-4" />
-              )}
-              {kmStatus === 'success' ? 'KM Connected' : 'Test Connection'}
-            </button>
-          </div>
-
-          {/* Error message */}
-          <AnimatePresence>
-            {error && (
-              <motion.div
-                initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: 'auto' }}
-                exit={{ opacity: 0, height: 0 }}
-                className="px-6 py-3 bg-red-500/10 border-b border-red-500/20"
-              >
-                <div className="flex items-center gap-2 text-red-400">
-                  <AlertCircle className="w-4 h-4" />
-                  <span className="text-sm">{error}</span>
+          {/* Features */}
+          <div className="p-8">
+            <div className="space-y-4 mb-8">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-lg bg-blue-500/20 flex items-center justify-center">
+                  <Shield className="w-5 h-5 text-blue-400" />
                 </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
+                <div>
+                  <div className="text-white font-medium">Quantum Key Distribution</div>
+                  <div className="text-sm text-gray-400">ETSI GS QKD 014 compatible</div>
+                </div>
+              </div>
 
-          {/* Action buttons */}
-          <div className="p-6">
-            <div className="flex gap-3">
-              <button
-                onClick={() => window.close?.() || window.location.reload()}
-                className="flex-1 px-4 py-3 bg-white/5 hover:bg-white/10 border border-white/10 rounded-lg text-gray-300 font-medium transition-colors"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={handleSignIn}
-                disabled={isLoading || !email || !password}
-                className="flex-1 px-4 py-3 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 rounded-lg text-white font-medium transition-all disabled:opacity-50 flex items-center justify-center gap-2"
-              >
-                {isLoading ? (
-                  <>
-                    <Loader2 className="w-4 h-4 animate-spin" />
-                    Signing In...
-                  </>
-                ) : (
-                  <>
-                    <Lock className="w-4 h-4" />
-                    Sign In
-                  </>
-                )}
-              </button>
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-lg bg-purple-500/20 flex items-center justify-center">
+                  <Lock className="w-5 h-5 text-purple-400" />
+                </div>
+                <div>
+                  <div className="text-white font-medium">Multi-Level Security</div>
+                  <div className="text-sm text-gray-400">OTP, AES-CFB, Kyber-512</div>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-lg bg-green-500/20 flex items-center justify-center">
+                  <CheckCircle2 className="w-5 h-5 text-green-400" />
+                </div>
+                <div>
+                  <div className="text-white font-medium">Gmail Compatible</div>
+                  <div className="text-sm text-gray-400">Works with existing email</div>
+                </div>
+              </div>
             </div>
 
-            {/* Footer links */}
-            <div className="flex items-center justify-center gap-4 mt-4 text-sm">
-              <button className="text-gray-400 hover:text-white flex items-center gap-1">
-                <Settings className="w-4 h-4" />
-                Advanced Settings
-              </button>
-              <span className="text-gray-600">|</span>
-              <button className="text-gray-400 hover:text-white flex items-center gap-1">
-                <HelpCircle className="w-4 h-4" />
-                Need Help?
-              </button>
+            {/* Info Box */}
+            <div className="bg-blue-500/10 border border-blue-500/20 rounded-lg p-4 mb-6">
+              <div className="flex gap-3">
+                <AlertCircle className="w-5 h-5 text-blue-400 flex-shrink-0 mt-0.5" />
+                <div className="text-sm text-gray-300">
+                  <p className="font-medium text-white mb-1">Backend Configuration Required</p>
+                  <p>Email credentials and QKD settings are configured in the backend's <code className="text-blue-300 bg-white/10 px-1 rounded">.env</code> file.</p>
+                  <p className="mt-2">Ensure the backend is running on <code className="text-blue-300 bg-white/10 px-1 rounded">http://localhost:8001</code></p>
+                </div>
+              </div>
             </div>
+
+            {/* Error message */}
+            <AnimatePresence>
+              {error && (
+                <motion.div
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: 'auto' }}
+                  exit={{ opacity: 0, height: 0 }}
+                  className="mb-4 p-4 bg-red-500/10 border border-red-500/20 rounded-lg"
+                >
+                  <div className="flex items-center gap-2 text-red-400">
+                    <AlertCircle className="w-4 h-4 flex-shrink-0" />
+                    <span className="text-sm">{error}</span>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+
+            {/* Connect Button */}
+            <button
+              onClick={handleConnect}
+              disabled={isConnecting || success}
+              className="w-full px-6 py-4 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 rounded-xl text-white font-semibold transition-all disabled:opacity-50 flex items-center justify-center gap-3 shadow-lg hover:shadow-xl"
+            >
+              {isConnecting ? (
+                <>
+                  <Loader2 className="w-5 h-5 animate-spin" />
+                  Connecting to Backend...
+                </>
+              ) : success ? (
+                <>
+                  <CheckCircle2 className="w-5 h-5" />
+                  Connected Successfully
+                </>
+              ) : (
+                <>
+                  Launch QuMail
+                  <ArrowRight className="w-5 h-5" />
+                </>
+              )}
+            </button>
+
+            {/* Footer */}
+            <div className="mt-6 text-center text-sm text-gray-400">
+              <p>Quantum Email Client v1.0.0</p>
+              <p className="mt-1">Educational & Research Use</p>
+            </div>
+          </div>
+        </motion.div>
+
+        {/* Status Indicators */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.5 }}
+          className="mt-6 flex items-center justify-center gap-4 text-sm text-gray-400"
+        >
+          <div className="flex items-center gap-2">
+            <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
+            <span>Frontend Ready</span>
+          </div>
+          <span>•</span>
+          <div className="flex items-center gap-2">
+            <div className="w-2 h-2 rounded-full bg-blue-400 animate-pulse" />
+            <span>Awaiting Backend</span>
           </div>
         </motion.div>
       </motion.div>

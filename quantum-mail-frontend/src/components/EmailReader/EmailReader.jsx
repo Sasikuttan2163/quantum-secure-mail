@@ -1,16 +1,49 @@
 // src/components/EmailReader/EmailReader.jsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { format, parseISO } from 'date-fns';
 import {
   X, Reply, ReplyAll, Forward, Trash2, Star, MoreHorizontal,
   Lock, Shield, Unlock, Paperclip, Download, Eye, ExternalLink,
-  CheckCircle, Info, Copy
+  CheckCircle, Info, Copy, Loader2
 } from 'lucide-react';
 import useStore from '../../store/useStore';
 
+// Helper function to safely format dates
+const safeFormatDate = (dateString, formatString) => {
+  try {
+    if (!dateString) return 'Unknown';
+    
+    let date;
+    try {
+      date = parseISO(dateString);
+    } catch {
+      date = new Date(dateString);
+    }
+    
+    if (isNaN(date.getTime())) {
+      return 'Invalid date';
+    }
+    
+    return format(date, formatString);
+  } catch (error) {
+    console.error('Error formatting date:', dateString, error);
+    return 'Unknown';
+  }
+};
+
 const SecurityBanner = ({ email }) => {
   const [showDetails, setShowDetails] = useState(false);
+  const [isDecrypting, setIsDecrypting] = useState(false);
+  
+  // Check if email is encrypted but not decrypted yet
+  useEffect(() => {
+    if (email.isEncrypted && !email.isDecrypted) {
+      setIsDecrypting(true);
+    } else {
+      setIsDecrypting(false);
+    }
+  }, [email.isEncrypted, email.isDecrypted]);
   
   const securityInfo = {
     1: {
@@ -65,7 +98,19 @@ const SecurityBanner = ({ email }) => {
           </div>
         </div>
         <div className="flex items-center gap-2">
-          {email.securityLevel !== 4 && (
+          {email.securityLevel !== 4 && !isDecrypting && email.isDecrypted && (
+            <div className="flex items-center gap-1 text-green-500 text-sm">
+              <CheckCircle className="w-4 h-4" />
+              <span>Decrypted</span>
+            </div>
+          )}
+          {isDecrypting && (
+            <div className="flex items-center gap-1 text-blue-500 text-sm">
+              <Loader2 className="w-4 h-4 animate-spin" />
+              <span>Decrypting...</span>
+            </div>
+          )}
+          {email.securityLevel !== 4 && !email.isEncrypted && (
             <div className="flex items-center gap-1 text-green-500 text-sm">
               <CheckCircle className="w-4 h-4" />
               <span>Verified</span>
@@ -106,7 +151,7 @@ const SecurityBanner = ({ email }) => {
               </div>
               <div>
                 <p className="text-gray-500 dark:text-gray-400">Encryption Timestamp</p>
-                <p className={info.text}>{format(parseISO(email.date), 'PPpp')}</p>
+                <p className={info.text}>{safeFormatDate(email.date, 'PPpp')}</p>
               </div>
               <div>
                 <p className="text-gray-500 dark:text-gray-400">Integrity</p>
@@ -169,6 +214,40 @@ const EmailReader = () => {
   const { selectedEmail, setSelectedEmail, setShowCompose, deleteEmail, toggleStarred } = useStore();
 
   if (!selectedEmail) return null;
+  
+  // Helper to safely extract email sender info
+  const getSenderInfo = () => {
+    if (!selectedEmail.from) {
+      return { name: 'Unknown', email: 'unknown@example.com', initial: '?' };
+    }
+    
+    // If from is already an object with name/email
+    if (typeof selectedEmail.from === 'object' && selectedEmail.from.name) {
+      return {
+        name: selectedEmail.from.name || 'Unknown',
+        email: selectedEmail.from.email || 'unknown@example.com',
+        initial: (selectedEmail.from.name || '?').charAt(0).toUpperCase()
+      };
+    }
+    
+    // If from is a string, parse it (fallback for old format)
+    if (typeof selectedEmail.from === 'string') {
+      const emailMatch = selectedEmail.from.match(/<(.+?)>/);
+      const name = selectedEmail.from.replace(/<.+?>/, '').trim() || 
+                   selectedEmail.from.split('@')[0];
+      const email = emailMatch ? emailMatch[1] : selectedEmail.from;
+      
+      return {
+        name,
+        email,
+        initial: name.charAt(0).toUpperCase()
+      };
+    }
+    
+    return { name: 'Unknown', email: 'unknown@example.com', initial: '?' };
+  };
+  
+  const sender = getSenderInfo();
 
   const handleReply = () => {
     setShowCompose(true, { type: 'reply', originalEmail: selectedEmail });
@@ -218,16 +297,16 @@ const EmailReader = () => {
         <div className="flex items-center gap-4 text-sm">
           <div className="flex items-center gap-2">
             <div className="w-10 h-10 bg-gradient-to-br from-primary-500 to-purple-600 rounded-full flex items-center justify-center text-white font-semibold">
-              {selectedEmail.from.name.charAt(0)}
+              {sender.initial}
             </div>
             <div>
-              <p className="font-medium text-gray-900 dark:text-white">{selectedEmail.from.name}</p>
-              <p className="text-gray-500 dark:text-gray-400">{selectedEmail.from.email}</p>
+              <p className="font-medium text-gray-900 dark:text-white">{sender.name}</p>
+              <p className="text-gray-500 dark:text-gray-400">{sender.email}</p>
             </div>
           </div>
           <div className="ml-auto text-right text-gray-500 dark:text-gray-400">
-            <p>{format(parseISO(selectedEmail.date), 'MMMM d, yyyy')}</p>
-            <p>{format(parseISO(selectedEmail.date), 'h:mm a')}</p>
+            <p>{safeFormatDate(selectedEmail.date, 'MMMM d, yyyy')}</p>
+            <p>{safeFormatDate(selectedEmail.date, 'h:mm a')}</p>
           </div>
         </div>
       </div>

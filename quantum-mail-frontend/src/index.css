@@ -1,0 +1,178 @@
+/* src/index.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap');
+
+@layer base {
+  * {
+    @apply box-border;
+  }
+  
+  html {
+    @apply antialiased;
+  }
+  
+  body {
+    @apply m-0 p-0 font-sans bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  
+  ::-webkit-scrollbar {
+    @apply w-2 h-2;
+  }
+  
+  ::-webkit-scrollbar-track {
+    @apply bg-gray-100 dark:bg-gray-800;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    @apply bg-gray-300 dark:bg-gray-600 rounded-full;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-gray-400 dark:bg-gray-500;
+  }
+}
+
+@layer components {
+  .btn {
+    @apply px-4 py-2 rounded-lg font-medium transition-all duration-200 
+           focus:outline-none focus:ring-2 focus:ring-offset-2
+           disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+  
+  .btn-primary {
+    @apply btn bg-primary-600 text-white hover:bg-primary-700 
+           focus:ring-primary-500 active:bg-primary-800;
+  }
+  
+  .btn-secondary {
+    @apply btn bg-gray-200 text-gray-800 hover:bg-gray-300 
+           focus:ring-gray-400 dark:bg-gray-700 dark:text-gray-200 
+           dark:hover:bg-gray-600;
+  }
+  
+  .btn-success {
+    @apply btn bg-green-600 text-white hover:bg-green-700 
+           focus:ring-green-500;
+  }
+  
+  .btn-danger {
+    @apply btn bg-red-600 text-white hover:bg-red-700 
+           focus:ring-red-500;
+  }
+  
+  .btn-ghost {
+    @apply btn bg-transparent hover:bg-gray-100 dark:hover:bg-gray-800;
+  }
+  
+  .input {
+    @apply w-full px-4 py-2 border border-gray-300 rounded-lg 
+           focus:outline-none focus:ring-2 focus:ring-primary-500 
+           focus:border-transparent bg-white dark:bg-gray-800 
+           dark:border-gray-600 dark:text-white
+           placeholder-gray-400 dark:placeholder-gray-500
+           transition-all duration-200;
+  }
+  
+  .input-error {
+    @apply input border-red-500 focus:ring-red-500;
+  }
+  
+  .card {
+    @apply bg-white dark:bg-gray-800 rounded-xl shadow-lg 
+           border border-gray-200 dark:border-gray-700;
+  }
+  
+  .sidebar-item {
+    @apply flex items-center gap-3 px-4 py-2.5 rounded-lg 
+           cursor-pointer transition-all duration-200
+           hover:bg-gray-100 dark:hover:bg-gray-700
+           text-gray-700 dark:text-gray-300;
+  }
+  
+  .sidebar-item.active {
+    @apply bg-primary-100 dark:bg-primary-900/30 
+           text-primary-700 dark:text-primary-400 font-medium;
+  }
+  
+  .badge {
+    @apply inline-flex items-center justify-center px-2 py-0.5 
+           text-xs font-medium rounded-full;
+  }
+  
+  .badge-primary {
+    @apply badge bg-primary-100 text-primary-700 
+           dark:bg-primary-900/30 dark:text-primary-400;
+  }
+  
+  .badge-success {
+    @apply badge bg-green-100 text-green-700 
+           dark:bg-green-900/30 dark:text-green-400;
+  }
+  
+  .badge-warning {
+    @apply badge bg-yellow-100 text-yellow-700 
+           dark:bg-yellow-900/30 dark:text-yellow-400;
+  }
+  
+  .badge-danger {
+    @apply badge bg-red-100 text-red-700 
+           dark:bg-red-900/30 dark:text-red-400;
+  }
+  
+  .tooltip {
+    @apply absolute z-50 px-2 py-1 text-xs text-white bg-gray-900 
+           rounded shadow-lg whitespace-nowrap;
+  }
+  
+  .dropdown {
+    @apply absolute z-50 mt-2 bg-white dark:bg-gray-800 
+           rounded-lg shadow-xl border border-gray-200 
+           dark:border-gray-700 overflow-hidden min-w-[200px];
+  }
+  
+  .dropdown-item {
+    @apply px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 
+           cursor-pointer transition-colors duration-150
+           flex items-center gap-2;
+  }
+  
+  .quantum-secure {
+    @apply text-quantum-secure;
+  }
+  
+  .quantum-aided {
+    @apply text-quantum-aided;
+  }
+  
+  .quantum-hybrid {
+    @apply text-quantum-hybrid;
+  }
+  
+  .quantum-none {
+    @apply text-quantum-none;
+  }
+}
+
+@layer utilities {
+  .drag-region {
+    -webkit-app-region: drag;
+  }
+  
+  .no-drag {
+    -webkit-app-region: no-drag;
+  }
+  
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+}

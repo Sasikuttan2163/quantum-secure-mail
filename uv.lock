@@ -525,11 +525,21 @@ name = "quantum-email-client"
 version = "0.1.0"
 source = { virtual = "." }
 dependencies = [
+    { name = "email-validator" },
     { name = "fastapi", extra = ["standard"] },
+    { name = "httpx" },
+    { name = "python-dotenv" },
+    { name = "uvicorn", extra = ["standard"] },
 ]
 
 [package.metadata]
-requires-dist = [{ name = "fastapi", extras = ["standard"], specifier = ">=0.128.5" }]
+requires-dist = [
+    { name = "email-validator", specifier = ">=2.3.0" },
+    { name = "fastapi", extras = ["standard"], specifier = ">=0.128.5" },
+    { name = "httpx", specifier = ">=0.28.1" },
+    { name = "python-dotenv", specifier = ">=1.2.1" },
+    { name = "uvicorn", extras = ["standard"], specifier = ">=0.40.0" },
+]
 
 [[package]]
 name = "rich"

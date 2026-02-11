@@ -2,7 +2,18 @@
 Configuration settings for the Quantum Email Backend
 """
 import os
+from pathlib import Path
 from typing import Optional
+
+# Load environment variables from .env file
+try:
+    from dotenv import load_dotenv
+    # Load .env from project root (parent directory of backend)
+    env_path = Path(__file__).parent.parent / '.env'
+    load_dotenv(env_path)
+except ImportError:
+    # python-dotenv not installed, will use system environment variables
+    pass
 
 
 class Config:

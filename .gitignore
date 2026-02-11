@@ -1,3 +1,6 @@
+email-env
+.env
+**/__pycache__/
 # python
 email-env
 __pycache__

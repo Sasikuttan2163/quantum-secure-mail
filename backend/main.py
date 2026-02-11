@@ -100,9 +100,9 @@ async def fetch_qkd_key(slave_sae_id: str, key_size: int = 256) -> tuple[str, st
                 )
             
             key_data = qkd_response.keys[0]
-            logger.info(f"Successfully obtained QKD key: {key_data.key_id}")
+            logger.info(f"Successfully obtained QKD key: {key_data.key_ID}")
             
-            return key_data.key_id, key_data.key
+            return key_data.key_ID, key_data.key
     
     except httpx.HTTPError as e:
         logger.error(f"Failed to fetch QKD key: {e}")

@@ -1,2 +1,13 @@
 # Use Python 3.12 for the project
+# Core framework
 fastapi[standard]
+uvicorn[standard]
+
+# HTTP client for QKD KME communication
+httpx
+
+# Email validation
+email-validator
+
+# Environment configuration (optional but recommended)
+python-dotenv

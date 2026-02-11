@@ -1,0 +1,37 @@
+"""
+Configuration settings for the Quantum Email Backend
+"""
+import os
+from typing import Optional
+
+
+class Config:
+    """Configuration class for email and QKD settings"""
+    
+    # SMTP Configuration
+    SMTP_SERVER: str = os.getenv("SMTP_SERVER", "smtp.gmail.com")
+    SMTP_PORT: int = int(os.getenv("SMTP_PORT", "587"))
+    SMTP_USERNAME: str = os.getenv("SMTP_USERNAME", "")
+    SMTP_PASSWORD: str = os.getenv("SMTP_PASSWORD", "")
+    SMTP_USE_TLS: bool = os.getenv("SMTP_USE_TLS", "true").lower() == "true"
+    
+    # QKD KME Configuration
+    QKD_KME_URL: str = os.getenv("QKD_KME_URL", "http://localhost:8000")
+    QKD_MASTER_SAE_ID: str = os.getenv("QKD_MASTER_SAE_ID", "SENDER_SAE")
+    QKD_SLAVE_SAE_ID: str = os.getenv("QKD_SLAVE_SAE_ID", "RECEIVER_SAE")
+    
+    # Backend API Configuration
+    BACKEND_HOST: str = os.getenv("BACKEND_HOST", "0.0.0.0")
+    BACKEND_PORT: int = int(os.getenv("BACKEND_PORT", "8001"))
+    
+    # Security Settings
+    DEFAULT_KEY_SIZE: int = 256  # bits
+    DEFAULT_SECURITY_LEVEL: str = "L2"  # L1, L2, L3, L4
+    
+    # Email Settings
+    EMAIL_ENCRYPTION_HEADER: str = "X-Quantum-Encryption"
+    EMAIL_KEY_ID_HEADER: str = "X-Quantum-Key-ID"
+    EMAIL_SECURITY_LEVEL_HEADER: str = "X-Quantum-Security-Level"
+    
+
+config = Config()

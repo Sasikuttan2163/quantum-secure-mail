@@ -1,3 +1,9 @@
 email-env
 .env
 **/__pycache__/
+# python
+email-env
+__pycache__
+# npm
+node_modules
+package-lock.json

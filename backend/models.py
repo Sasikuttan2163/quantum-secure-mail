@@ -46,7 +46,7 @@ class QKDKeyRequest(BaseModel):
 
 class QKDKey(BaseModel):
     """Model for a single QKD key"""
-    key_id: str
+    key_ID: str
     key: str
 
 

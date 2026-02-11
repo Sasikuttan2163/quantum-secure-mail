@@ -32,7 +32,7 @@ async def get_key(slave_SAE_ID: str, request: KeyRequest):
     for _ in range(num_keys):
         key_id, key = generate_key(key_size)
         keyRequest = {
-            "key_id": key,
+            "key_ID": key,
             "key": key
         }
 

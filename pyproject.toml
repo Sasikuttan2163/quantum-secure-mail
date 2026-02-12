@@ -8,6 +8,8 @@ dependencies = [
     "email-validator>=2.3.0",
     "fastapi[standard]>=0.128.5",
     "httpx>=0.28.1",
+    "kyber-py>=1.2.0",
+    "pycryptodome>=3.23.0",
     "python-dotenv>=1.2.1",
     "uvicorn[standard]>=0.40.0",
 ]

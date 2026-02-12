@@ -26,8 +26,16 @@ class Config:
     SMTP_PASSWORD: str = os.getenv("SMTP_PASSWORD", "")
     SMTP_USE_TLS: bool = os.getenv("SMTP_USE_TLS", "true").lower() == "true"
     
+    # IMAP Configuration
+    IMAP_SERVER: str = os.getenv("IMAP_SERVER", "imap.gmail.com")
+    IMAP_PORT: int = int(os.getenv("IMAP_PORT", "993"))
+    IMAP_USERNAME: str = os.getenv("IMAP_USERNAME", "")
+    IMAP_PASSWORD: str = os.getenv("IMAP_PASSWORD", "")
+    IMAP_USE_SSL: bool = os.getenv("IMAP_USE_SSL", "true").lower() == "true"
+    
     # QKD KME Configuration
-    QKD_KME_URL: str = os.getenv("QKD_KME_URL", "http://localhost:8000")
+    # Use 127.0.0.1 instead of localhost to force IPv4 (avoids ::1 IPv6 connection issues)
+    QKD_KME_URL: str = os.getenv("QKD_KME_URL", "http://127.0.0.1:8000")
     QKD_MASTER_SAE_ID: str = os.getenv("QKD_MASTER_SAE_ID", "SENDER_SAE")
     QKD_SLAVE_SAE_ID: str = os.getenv("QKD_SLAVE_SAE_ID", "RECEIVER_SAE")
     

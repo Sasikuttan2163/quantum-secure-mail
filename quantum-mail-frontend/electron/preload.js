@@ -21,6 +21,7 @@ contextBridge.exposeInMainWorld('electronAPI', {
   // Email operations
   sendEmail: (emailData) => ipcRenderer.invoke('send-email', emailData),
   fetchEmails: (folder) => ipcRenderer.invoke('fetch-emails', folder),
+  decryptEmail: (emailId, folder) => ipcRenderer.invoke('decrypt-email', emailId, folder),
   deleteEmail: (emailId) => ipcRenderer.invoke('delete-email', emailId),
   moveEmail: (emailId, folder) => ipcRenderer.invoke('move-email', emailId, folder),
   

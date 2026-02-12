@@ -29,11 +29,11 @@ const Sidebar = ({ onLogout }) => {
     { id: 'starred', label: 'Starred', icon: Star },
   ];
 
-  const quantumItems = [
-    { id: 'available', label: 'Available', count: keys.stats.availableCount, color: 'text-green-500' },
-    { id: 'used', label: 'Used', count: keys.stats.usedCount, color: 'text-gray-500' },
-    { id: 'expired', label: 'Expired', count: keys.stats.expiredCount, color: 'text-red-500' },
-  ];
+  // const quantumItems = [
+  //   { id: 'available', label: 'Available', count: keys.stats.availableCount, color: 'text-green-500' },
+  //   { id: 'used', label: 'Used', count: keys.stats.usedCount, color: 'text-gray-500' },
+  //   { id: 'expired', label: 'Expired', count: keys.stats.expiredCount, color: 'text-red-500' },
+  // ];
 
   return (
     <motion.div
@@ -80,44 +80,6 @@ const Sidebar = ({ onLogout }) => {
             );
           })}
         </nav>
-
-        {/* Quantum Keys Section */}
-        <div className="mt-6 px-2">
-          {!sidebarCollapsed && (
-            <h3 className="px-4 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">
-              Quantum Keys
-            </h3>
-          )}
-          
-          <button
-            onClick={() => setShowKeyManager(true)}
-            className="w-full sidebar-item"
-            title={sidebarCollapsed ? 'Key Manager' : undefined}
-          >
-            <Key className="w-5 h-5 flex-shrink-0 text-purple-500" />
-            {!sidebarCollapsed && <span className="flex-1 text-left">Key Manager</span>}
-          </button>
-
-          {!sidebarCollapsed && (
-            <div className="ml-9 space-y-1 mt-1">
-              {quantumItems.map((item) => (
-                <div key={item.id} className="flex items-center justify-between px-2 py-1 text-sm">
-                  <span className="text-gray-600 dark:text-gray-400">{item.label}</span>
-                  <span className={`font-medium ${item.color}`}>{item.count}</span>
-                </div>
-              ))}
-            </div>
-          )}
-
-          <button
-            onClick={() => setShowSecurityDashboard(true)}
-            className="w-full sidebar-item mt-2"
-            title={sidebarCollapsed ? 'Security Dashboard' : undefined}
-          >
-            <BarChart3 className="w-5 h-5 flex-shrink-0 text-blue-500" />
-            {!sidebarCollapsed && <span className="flex-1 text-left">Security Dashboard</span>}
-          </button>
-        </div>
       </div>
 
       {/* Bottom section */}

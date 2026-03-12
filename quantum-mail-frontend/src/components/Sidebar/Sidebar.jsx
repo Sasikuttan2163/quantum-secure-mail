@@ -2,30 +2,24 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import {
-  Inbox, Send, FileEdit, Trash2, Star, Key,
-  BarChart3, Settings, LogOut, ChevronLeft, ChevronRight,
-  Shield, Clock, AlertCircle
+  Inbox, Send, FileEdit, Star,
+  ChevronLeft, ChevronRight
 } from 'lucide-react';
 import useStore from '../../store/useStore';
 
-const Sidebar = ({ onLogout }) => {
+const Sidebar = () => {
   const {
     selectedFolder,
     setSelectedFolder,
     emails,
     sidebarCollapsed,
     toggleSidebar,
-    setShowKeyManager,
-    setShowSecurityDashboard,
-    setShowSettings,
-    keys,
   } = useStore();
 
   const mainFolders = [
     { id: 'inbox', label: 'Inbox', icon: Inbox, count: emails.inbox.filter(e => !e.read).length },
     { id: 'sent', label: 'Sent', icon: Send },
     { id: 'drafts', label: 'Drafts', icon: FileEdit, count: emails.drafts.length },
-    { id: 'trash', label: 'Trash', icon: Trash2 },
     { id: 'starred', label: 'Starred', icon: Star },
   ];
 
@@ -80,27 +74,6 @@ const Sidebar = ({ onLogout }) => {
             );
           })}
         </nav>
-      </div>
-
-      {/* Bottom section */}
-      <div className="border-t border-gray-200 dark:border-gray-700 p-2 space-y-1">
-        <button
-          onClick={() => setShowSettings(true)}
-          className="w-full sidebar-item"
-          title={sidebarCollapsed ? 'Settings' : undefined}
-        >
-          <Settings className="w-5 h-5 flex-shrink-0" />
-          {!sidebarCollapsed && <span className="flex-1 text-left">Settings</span>}
-        </button>
-        
-        <button
-          onClick={onLogout}
-          className="w-full sidebar-item text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20"
-          title={sidebarCollapsed ? 'Logout' : undefined}
-        >
-          <LogOut className="w-5 h-5 flex-shrink-0" />
-          {!sidebarCollapsed && <span className="flex-1 text-left">Logout</span>}
-        </button>
       </div>
     </motion.div>
   );

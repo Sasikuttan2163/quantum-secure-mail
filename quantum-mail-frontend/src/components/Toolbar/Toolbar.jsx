@@ -1,8 +1,8 @@
 // src/components/Toolbar/Toolbar.jsx
 import React from 'react';
 import {
-  Edit, Reply, ReplyAll, Forward, Trash2, Archive,
-  Star, MoreHorizontal, RefreshCw, Search, Filter
+  Edit,
+  Star, RefreshCw, Search, Filter
 } from 'lucide-react';
 import useStore from '../../store/useStore';
 
@@ -10,9 +10,9 @@ const Toolbar = () => {
   const {
     setShowCompose,
     selectedEmail,
-    deleteEmail,
     toggleStarred,
     fetchEmails,
+    clearAllEmails,
     selectedFolder,
     searchQuery,
     setSearchQuery,
@@ -25,40 +25,8 @@ const Toolbar = () => {
     setShowCompose(true);
   };
 
-  const handleReply = () => {
-    if (selectedEmail) {
-      setShowCompose(true, {
-        type: 'reply',
-        originalEmail: selectedEmail,
-      });
-    }
-  };
-
-  const handleReplyAll = () => {
-    if (selectedEmail) {
-      setShowCompose(true, {
-        type: 'replyAll',
-        originalEmail: selectedEmail,
-      });
-    }
-  };
-
-  const handleForward = () => {
-    if (selectedEmail) {
-      setShowCompose(true, {
-        type: 'forward',
-        originalEmail: selectedEmail,
-      });
-    }
-  };
-
-  const handleDelete = () => {
-    if (selectedEmail) {
-      deleteEmail(selectedEmail.id);
-    }
-  };
-
   const handleRefresh = () => {
+    clearAllEmails();
     fetchEmails(selectedFolder);
   };
 
@@ -75,44 +43,6 @@ const Toolbar = () => {
         </button>
 
         <div className="w-px h-6 bg-gray-300 dark:bg-gray-600 mx-2" />
-
-        <button
-          onClick={handleReply}
-          disabled={!selectedEmail}
-          className="btn-ghost p-2"
-          title="Reply"
-        >
-          <Reply className="w-5 h-5" />
-        </button>
-
-        <button
-          onClick={handleReplyAll}
-          disabled={!selectedEmail}
-          className="btn-ghost p-2"
-          title="Reply All"
-        >
-          <ReplyAll className="w-5 h-5" />
-        </button>
-
-        <button
-          onClick={handleForward}
-          disabled={!selectedEmail}
-          className="btn-ghost p-2"
-          title="Forward"
-        >
-          <Forward className="w-5 h-5" />
-        </button>
-
-        <div className="w-px h-6 bg-gray-300 dark:bg-gray-600 mx-2" />
-
-        <button
-          onClick={handleDelete}
-          disabled={!selectedEmail}
-          className="btn-ghost p-2 text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20"
-          title="Delete"
-        >
-          <Trash2 className="w-5 h-5" />
-        </button>
 
         <button
           onClick={() => selectedEmail && toggleStarred(selectedEmail.id)}

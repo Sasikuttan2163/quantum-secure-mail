@@ -3,8 +3,8 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import {
   X, Settings, Mail, Shield, Key, Palette,
-  Monitor, Moon, Sun, Save, RotateCcw, Check,
-  Eye, EyeOff, Server, AlertCircle, Loader2
+  Monitor, Moon, Sun, Save, Check,
+  Eye, EyeOff, Server, Loader2
 } from 'lucide-react';
 import useStore from '../../store/useStore';
 
@@ -602,15 +602,8 @@ const SettingsPanel = () => {
               </div>
               <span className="badge-success">Default</span>
             </div>
-            <div className="flex items-center gap-2">
-              <button className="btn-ghost text-sm">Edit</button>
-              <button className="btn-ghost text-sm text-red-500">Remove</button>
-            </div>
           </div>
         </div>
-        <button className="mt-4 btn-secondary w-full">
-          + Add Email Account
-        </button>
       </div>
     </div>
   );
@@ -689,10 +682,6 @@ const SettingsPanel = () => {
 
         {/* Footer */}
         <div className="flex items-center justify-between px-6 py-4 border-t border-gray-200 dark:border-gray-700">
-          <button className="btn-ghost flex items-center gap-2 text-gray-500">
-            <RotateCcw className="w-4 h-4" />
-            Reset to Defaults
-          </button>
           <div className="flex items-center gap-3">
             <button
               onClick={() => setShowSettings(false)}

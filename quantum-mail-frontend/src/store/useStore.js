@@ -174,6 +174,7 @@ const useStore = create(
     logout: async () => {
       if (window.electronAPI) {
         await window.electronAPI.logout();
+        await window.electronAPI.clearAllData(); // Clear all cached data
       }
       set((state) => {
         state.isAuthenticated = false;
@@ -181,6 +182,23 @@ const useStore = create(
         state.kmConnection = null;
         state.kmStatus = 'disconnected';
         state.emails = { inbox: [], sent: [], drafts: [], trash: [], starred: [] };
+        state.keys = {
+          available: [],
+          inUse: [],
+          used: [],
+          expired: [],
+          stats: { availableCount: 0, inUseCount: 0, usedCount: 0, expiredCount: 0, lastSync: null }
+        };
+      });
+    },
+    
+    clearAllData: async () => {
+      if (window.electronAPI) {
+        await window.electronAPI.clearAllData();
+      }
+      set((state) => {
+        state.emails = { inbox: [], sent: [], drafts: [], trash: [], starred: [] };
+        state.selectedEmail = null;
         state.keys = {
           available: [],
           inUse: [],
@@ -314,7 +332,12 @@ const useStore = create(
             }));
             
             set((state) => {
+              // Clear old emails for this folder before adding new ones
               state.emails[folder] = mappedEmails;
+              // Clear selected email if it's from a different account
+              if (state.selectedEmail && !mappedEmails.find(e => e.id === state.selectedEmail.id)) {
+                state.selectedEmail = null;
+              }
               state.isLoading = false;
             });
             return;
@@ -413,16 +436,47 @@ const useStore = create(
 
     deleteEmail: async (emailId) => {
       const folder = get().selectedFolder;
+      const emailToDelete = get().emails[folder].find(e => e.id === emailId);
+
+      if (!emailToDelete) {
+        return;
+      }
+
       set((state) => {
         state.emails[folder] = state.emails[folder].filter(e => e.id !== emailId);
+
+        if (folder !== 'trash') {
+          const alreadyInTrash = state.emails.trash.some(e => e.id === emailId);
+          if (!alreadyInTrash) {
+            state.emails.trash.unshift({ ...emailToDelete });
+          }
+        }
+
         if (state.selectedEmail?.id === emailId) {
           state.selectedEmail = null;
         }
       });
-      
+
       if (window.electronAPI) {
-        await window.electronAPI.deleteEmail(emailId);
+        if (folder !== 'trash') {
+          await window.electronAPI.moveEmail(emailId, 'trash');
+        } else {
+          await window.electronAPI.deleteEmail(emailId);
+        }
       }
+    },
+
+    clearAllEmails: () => {
+      set((state) => {
+        state.emails = {
+          inbox: [],
+          sent: [],
+          drafts: [],
+          trash: [],
+          starred: [],
+        };
+        state.selectedEmail = null;
+      });
     },
 
     moveEmail: async (emailId, targetFolder) => {

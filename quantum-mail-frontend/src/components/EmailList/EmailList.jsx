@@ -2,7 +2,7 @@
 import React, { useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { format, isToday, isYesterday, parseISO } from 'date-fns';
-import { Star, Paperclip, Lock, Shield, Unlock } from 'lucide-react';
+import { Paperclip, Lock, Shield, Unlock } from 'lucide-react';
 import useStore from '../../store/useStore';
 
 const SecurityIcon = ({ level }) => {
@@ -87,13 +87,6 @@ const formatEmailDate = (dateString) => {
 };
 
 const EmailListItem = ({ email, isSelected, onClick }) => {
-  const { toggleStarred } = useStore();
-
-  const handleStarClick = (e) => {
-    e.stopPropagation();
-    toggleStarred(email.id);
-  };
-
   return (
     <motion.div
       layout
@@ -129,12 +122,6 @@ const EmailListItem = ({ email, isSelected, onClick }) => {
               {email.hasAttachments && (
                 <Paperclip className="w-4 h-4 text-gray-400" />
               )}
-              <button
-                onClick={handleStarClick}
-                className="p-0.5 hover:bg-gray-200 dark:hover:bg-gray-600 rounded"
-              >
-                <Star className={`w-4 h-4 ${email.starred ? 'fill-yellow-400 text-yellow-400' : 'text-gray-400 hover:text-yellow-400'}`} />
-              </button>
             </div>
           </div>
           
@@ -220,7 +207,10 @@ const EmailList = () => {
       <div className="h-full flex items-center justify-center text-gray-500 dark:text-gray-400">
         <div className="text-center">
           <div className="text-4xl mb-2">📭</div>
-          <p>No emails found</p>
+          <p className="text-lg font-medium">Empty</p>
+          {searchQuery && (
+            <p className="text-sm mt-2">No emails match your search</p>
+          )}
         </div>
       </div>
     );

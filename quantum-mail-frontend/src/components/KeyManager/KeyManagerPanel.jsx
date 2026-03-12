@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import {
-  X, Key, RefreshCw, Download, Trash2, Clock,
+  X, Key, RefreshCw, Download, Clock,
   CheckCircle, AlertCircle, XCircle, Loader2,
   TrendingUp, Database, Shield
 } from 'lucide-react';
@@ -218,13 +218,12 @@ const KeyManagerPanel = () => {
                     <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Size</th>
                     <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Retrieved</th>
                     <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Status</th>
-                    <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Actions</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
                   {displayedKeys.length === 0 ? (
                     <tr>
-                      <td colSpan={5} className="px-4 py-8 text-center text-gray-500">
+                      <td colSpan={4} className="px-4 py-8 text-center text-gray-500">
                         No keys in this category
                       </td>
                     </tr>
@@ -248,11 +247,6 @@ const KeyManagerPanel = () => {
                           }`}>
                             {key.status}
                           </span>
-                        </td>
-                        <td className="px-4 py-3">
-                          <button className="p-1 hover:bg-gray-200 dark:hover:bg-gray-600 rounded">
-                            <Trash2 className="w-4 h-4 text-gray-400 hover:text-red-500" />
-                          </button>
                         </td>
                       </tr>
                     ))
@@ -282,16 +276,6 @@ const KeyManagerPanel = () => {
               </>
             )}
           </button>
-          <div className="flex items-center gap-2">
-            <button className="btn-secondary flex items-center gap-2">
-              <Trash2 className="w-4 h-4" />
-              Clear Expired
-            </button>
-            <button className="btn-secondary flex items-center gap-2">
-              <Download className="w-4 h-4" />
-              Export Report
-            </button>
-          </div>
         </div>
       </motion.div>
     </motion.div>

@@ -3,8 +3,8 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { format, parseISO } from 'date-fns';
 import {
-  X, Reply, ReplyAll, Forward, Trash2, Star, MoreHorizontal,
-  Lock, Shield, Unlock, Paperclip, Download, Eye, ExternalLink,
+  X, Star,
+  Lock, Shield, Unlock, Paperclip,
   CheckCircle, Info, Copy, Loader2
 } from 'lucide-react';
 import useStore from '../../store/useStore';
@@ -198,20 +198,12 @@ const AttachmentItem = ({ attachment }) => {
           {attachment.encrypted && ' • Encrypted'}
         </p>
       </div>
-      <div className="flex items-center gap-1">
-        <button className="p-2 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg" title="Download">
-          <Download className="w-4 h-4 text-gray-500" />
-        </button>
-        <button className="p-2 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg" title="Open">
-          <ExternalLink className="w-4 h-4 text-gray-500" />
-        </button>
-      </div>
     </div>
   );
 };
 
 const EmailReader = () => {
-  const { selectedEmail, setSelectedEmail, setShowCompose, deleteEmail, toggleStarred } = useStore();
+  const { selectedEmail, setSelectedEmail, toggleStarred } = useStore();
 
   if (!selectedEmail) return null;
   
@@ -249,23 +241,6 @@ const EmailReader = () => {
   
   const sender = getSenderInfo();
 
-  const handleReply = () => {
-    setShowCompose(true, { type: 'reply', originalEmail: selectedEmail });
-  };
-
-  const handleReplyAll = () => {
-    setShowCompose(true, { type: 'replyAll', originalEmail: selectedEmail });
-  };
-
-  const handleForward = () => {
-    setShowCompose(true, { type: 'forward', originalEmail: selectedEmail });
-  };
-
-  const handleDelete = () => {
-    deleteEmail(selectedEmail.id);
-    setSelectedEmail(null);
-  };
-
   return (
     <div className="h-full flex flex-col bg-white dark:bg-gray-800">
       {/* Header */}
@@ -283,9 +258,6 @@ const EmailReader = () => {
               className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg"
             >
               <Star className={`w-5 h-5 ${selectedEmail.starred ? 'fill-yellow-400 text-yellow-400' : 'text-gray-400'}`} />
-            </button>
-            <button className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">
-              <MoreHorizontal className="w-5 h-5 text-gray-500" />
             </button>
           </div>
         </div>
@@ -336,25 +308,6 @@ const EmailReader = () => {
         )}
       </div>
 
-      {/* Footer actions */}
-      <div className="flex-shrink-0 px-6 py-4 border-t border-gray-200 dark:border-gray-700 flex items-center gap-3">
-        <button onClick={handleReply} className="btn-secondary flex items-center gap-2">
-          <Reply className="w-4 h-4" />
-          Reply
-        </button>
-        <button onClick={handleReplyAll} className="btn-secondary flex items-center gap-2">
-          <ReplyAll className="w-4 h-4" />
-          Reply All
-        </button>
-        <button onClick={handleForward} className="btn-secondary flex items-center gap-2">
-          <Forward className="w-4 h-4" />
-          Forward
-        </button>
-        <button onClick={handleDelete} className="btn-ghost text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 flex items-center gap-2 ml-auto">
-          <Trash2 className="w-4 h-4" />
-          Delete
-        </button>
-      </div>
     </div>
   );
 };

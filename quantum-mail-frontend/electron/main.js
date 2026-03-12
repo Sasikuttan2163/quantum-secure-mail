@@ -1,6 +1,10 @@
 // electron/main.js
-const { app, BrowserWindow, ipcMain, Menu, Tray, nativeImage, safeStorage } = require('electron');
 const path = require('path');
+
+// Load environment variables from .env file in project root
+require('dotenv').config({ path: path.join(__dirname, '../../.env') });
+
+const { app, BrowserWindow, ipcMain, Menu, Tray, nativeImage, safeStorage } = require('electron');
 const { setupIpcHandlers } = require('./ipc-handlers');
 
 let mainWindow;

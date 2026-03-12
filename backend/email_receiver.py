@@ -43,6 +43,7 @@ class EmailReceiver:
         self.password = password or config.IMAP_PASSWORD
         self.use_ssl = use_ssl
         self.connection = None
+        self._folder_cache = None
         
         logger.info(f"EmailReceiver initialized with server: {self.imap_server}:{self.imap_port}")
     
@@ -61,11 +62,109 @@ class EmailReceiver:
             
             self.connection.login(self.username, self.password)
             logger.info("Connected to IMAP server successfully")
+            
+            # Cache folder list for mapping
+            self._folder_cache = None
+            
             return True
             
         except Exception as e:
             logger.error(f"Failed to connect to IMAP server: {e}")
             return False
+    
+    def _get_folder_list(self) -> List[str]:
+        """Get and cache the list of available folders"""
+        if self._folder_cache is not None:
+            return self._folder_cache
+        
+        if not self.connection:
+            return []
+        
+        try:
+            status, folders = self.connection.list()
+            if status == 'OK':
+                folder_list = []
+                for folder in folders:
+                    folder_str = folder.decode() if isinstance(folder, bytes) else folder
+                    # Extract folder name from IMAP LIST response
+                    # Format: '(\\Flags) "/" "FolderName"' or '(\\Flags) "/" FolderName'
+                    parts = folder_str.split('"')
+                    if len(parts) >= 3:
+                        folder_list.append(parts[-2])
+                    else:
+                        # Handle unquoted folder names
+                        parts = folder_str.split(' ')
+                        if len(parts) >= 3:
+                            folder_list.append(' '.join(parts[2:]))
+                
+                self._folder_cache = folder_list
+                logger.info(f"Available folders: {folder_list}")
+                return folder_list
+        except Exception as e:
+            logger.error(f"Failed to list folders: {e}")
+        
+        return []
+    
+    def _map_folder_name(self, folder: str) -> str:
+        """
+        Map common folder names to provider-specific folder names.
+        
+        Args:
+            folder: Generic folder name (INBOX, SENT, DRAFTS, TRASH)
+        
+        Returns:
+            Provider-specific folder name
+        """
+        folder_upper = folder.upper()
+        
+        # INBOX is standard
+        if folder_upper == 'INBOX':
+            return 'INBOX'
+        
+        # Get available folders
+        available_folders = self._get_folder_list()
+        
+        # Gmail-specific mapping
+        gmail_mappings = {
+            'SENT': ['[Gmail]/Sent Mail', 'Sent'],
+            'DRAFTS': ['[Gmail]/Drafts', 'Drafts'],
+            'TRASH': ['[Gmail]/Trash', 'Trash'],
+            'SPAM': ['[Gmail]/Spam', 'Spam'],
+            'STARRED': ['[Gmail]/Starred'],
+        }
+        
+        # Other common mappings
+        common_mappings = {
+            'SENT': ['Sent', 'Sent Messages', 'Sent Items'],
+            'DRAFTS': ['Drafts', 'Draft'],
+            'TRASH': ['Trash', 'Deleted', 'Deleted Messages'],
+            'SPAM': ['Spam', 'Junk'],
+        }
+        
+        # Try Gmail mappings first if it looks like Gmail
+        if 'gmail' in self.imap_server.lower():
+            if folder_upper in gmail_mappings:
+                for candidate in gmail_mappings[folder_upper]:
+                    if candidate in available_folders:
+                        logger.info(f"Mapped {folder} to {candidate}")
+                        return candidate
+        
+        # Try common mappings
+        if folder_upper in common_mappings:
+            for candidate in common_mappings[folder_upper]:
+                if candidate in available_folders:
+                    logger.info(f"Mapped {folder} to {candidate}")
+                    return candidate
+        
+        # Return original folder name as fallback
+        return folder
+
+    def _format_mailbox_name(self, mailbox: str) -> str:
+        """Format mailbox name for IMAP commands, quoting special names safely."""
+        if any(char in mailbox for char in [' ', '[', ']', '"']):
+            escaped = mailbox.replace('\\', '\\\\').replace('"', '\\"')
+            return f'"{escaped}"'
+        return mailbox
     
     def disconnect(self):
         """Disconnect from IMAP server"""
@@ -124,11 +223,30 @@ class EmailReceiver:
             if not self.connect():
                 raise Exception("Failed to connect to IMAP server")
         
+        # Map folder name to provider-specific name
+        actual_folder = self._map_folder_name(folder)
+        logger.info(f"Fetching from folder: {actual_folder}")
+        
         try:
             # Select folder
-            status, messages = self.connection.select(folder)
+            logger.info(f"Attempting to select folder: {actual_folder}")
+            mailbox_name = self._format_mailbox_name(actual_folder)
+
+            # Use readonly mode to avoid permission issues
+            status, messages = self.connection.select(mailbox_name, readonly=True)
+
+            # Fallback: retry unquoted mailbox in case server expects raw names
+            if status != 'OK' and mailbox_name != actual_folder:
+                logger.warning(
+                    f"Quoted mailbox select failed for '{actual_folder}', retrying unquoted"
+                )
+                status, messages = self.connection.select(actual_folder, readonly=True)
+            
             if status != 'OK':
-                raise Exception(f"Failed to select folder: {folder}")
+                logger.error(f"Failed to select folder '{actual_folder}': status={status}, messages={messages}")
+                return []
+            
+            logger.info(f"Successfully selected folder: {actual_folder}")
             
             # Search for emails
             search_criteria = 'UNSEEN' if unread_only else 'ALL'
@@ -153,7 +271,7 @@ class EmailReceiver:
                     logger.error(f"Failed to fetch email {msg_id}: {e}")
                     continue
             
-            logger.info(f"Fetched {len(emails)} emails from {folder}")
+            logger.info(f"Fetched {len(emails)} emails from {actual_folder}")
             return emails
             
         except Exception as e:
@@ -327,13 +445,25 @@ class EmailReceiver:
                 raise Exception("Failed to connect to IMAP server")
         
         try:
-            # Select folder
-            self.connection.select(folder)
+            # Map and select folder safely
+            actual_folder = self._map_folder_name(folder)
+            mailbox_name = self._format_mailbox_name(actual_folder)
+
+            status, messages = self.connection.select(mailbox_name, readonly=True)
+            if status != 'OK' and mailbox_name != actual_folder:
+                status, messages = self.connection.select(actual_folder, readonly=True)
+
+            if status != 'OK':
+                logger.error(
+                    f"Failed to select folder '{actual_folder}' for message {msg_id}: "
+                    f"status={status}, messages={messages}"
+                )
+                return None
             
             # Fetch email
             email_data = self._fetch_email_by_id(msg_id.encode())
             if email_data:
-                email_data['folder'] = folder
+                email_data['folder'] = actual_folder
             
             return email_data
             

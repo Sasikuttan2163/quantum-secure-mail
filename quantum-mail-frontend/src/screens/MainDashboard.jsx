@@ -23,10 +23,13 @@ const MainDashboard = ({ onLogout }) => {
     sidebarCollapsed,
     fetchEmails,
     fetchKeys,
+    clearAllEmails,
     selectedFolder,
   } = useStore();
 
   useEffect(() => {
+    // Clear any cached emails before initial fetch
+    clearAllEmails();
     // Initial data fetch
     fetchEmails('inbox');
     fetchKeys();

@@ -17,6 +17,7 @@ contextBridge.exposeInMainWorld('electronAPI', {
   secureStore: (key, value) => ipcRenderer.invoke('secure-store', key, value),
   secureRetrieve: (key) => ipcRenderer.invoke('secure-retrieve', key),
   secureDelete: (key) => ipcRenderer.invoke('secure-delete', key),
+  clearAllData: () => ipcRenderer.invoke('clear-all-data'),
   
   // Email operations
   sendEmail: (emailData) => ipcRenderer.invoke('send-email', emailData),

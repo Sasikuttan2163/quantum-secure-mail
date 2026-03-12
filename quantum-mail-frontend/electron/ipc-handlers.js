@@ -6,7 +6,7 @@ const axios = require('axios');
 
 // Backend API configuration
 // Use 127.0.0.1 instead of localhost to force IPv4 (avoids ::1 IPv6 connection issues)
-const BACKEND_URL = process.env.BACKEND_URL || 'http://127.0.0.1:8000';
+const BACKEND_URL = process.env.BACKEND_URL || 'http://127.0.0.1:8001';
 
 // Simulated data storage (in real app, use proper database)
 let storedData = new Map();
@@ -72,6 +72,15 @@ function setupIpcHandlers(ipcMain, mainWindow) {
   
   ipcMain.handle('secure-delete', async (event, key) => {
     storedData.delete(key);
+    return { success: true };
+  });
+  
+  // Clear all stored data (useful when switching accounts)
+  ipcMain.handle('clear-all-data', async () => {
+    storedData.clear();
+    kmConnection = null;
+    emailAccounts = [];
+    console.log('All cached data cleared');
     return { success: true };
   });
   
@@ -150,14 +159,16 @@ function setupIpcHandlers(ipcMain, mainWindow) {
   ipcMain.handle('fetch-emails', async (event, folder) => {
     try {
       console.log(`Fetching emails from ${folder}...`);
+      
+      // Send the folder name as-is, let the backend handle mapping
       const response = await axios.post(`${BACKEND_URL}/fetch`, {
-        folder: folder.toUpperCase(), // INBOX, SENT, etc.
+        folder: folder.toUpperCase(), // INBOX, SENT, DRAFTS, TRASH
         limit: 50,
         unread_only: false
       });
       
       if (response.data.success) {
-        console.log(`Fetched ${response.data.count} emails`);
+        console.log(`Fetched ${response.data.count} emails from ${folder}`);
         return { success: true, emails: response.data.emails };
       } else {
         console.error('Failed to fetch emails');
@@ -165,9 +176,8 @@ function setupIpcHandlers(ipcMain, mainWindow) {
       }
     } catch (error) {
       console.error('Error fetching emails:', error.message);
-      // Fallback to simulated emails for development
-      const emails = generateSimulatedEmails(folder);
-      return { success: true, emails, simulated: true };
+      // Return empty array instead of simulated data
+      return { success: false, emails: [], error: error.message };
     }
   });
   

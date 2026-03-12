@@ -2,8 +2,8 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import {
-  X, Minus, Square, Send, Save, Trash2, Paperclip, Smile,
-  Link, Bold, Italic, Underline, AlignLeft, Lock, Shield,
+  X, Send,
+  Lock, Shield,
   Unlock, ChevronDown, Check, AlertCircle, Loader2
 } from 'lucide-react';
 import useStore from '../../store/useStore';
@@ -84,7 +84,6 @@ const ComposeModal = () => {
   const [subject, setSubject] = useState('');
   const [body, setBody] = useState('');
   const [securityLevel, setSecurityLevel] = useState(2);
-  const [attachments, setAttachments] = useState([]);
   const [recipientStatus, setRecipientStatus] = useState(null); // 'quantum', 'maybe', 'no'
 
   useEffect(() => {
@@ -114,19 +113,6 @@ const ComposeModal = () => {
     }
   }, [to]);
 
-  const handleAttach = async () => {
-    if (window.electronAPI) {
-      const files = await window.electronAPI.selectFile();
-      if (files.length > 0) {
-        setAttachments([...attachments, ...files]);
-      }
-    }
-  };
-
-  const handleRemoveAttachment = (index) => {
-    setAttachments(attachments.filter((_, i) => i !== index));
-  };
-
   const handleSend = async () => {
     if (!to || !subject) return;
 
@@ -137,18 +123,13 @@ const ComposeModal = () => {
       subject,
       body,
       securityLevel,
-      attachments,
+      attachments: [],
     };
 
     const result = await sendEmail(emailData);
     if (result.success) {
       setShowCompose(false);
     }
-  };
-
-  const handleSaveDraft = () => {
-    // Save as draft logic
-    setShowCompose(false);
   };
 
   const handleDiscard = () => {
@@ -173,20 +154,12 @@ const ComposeModal = () => {
         {/* Header */}
         <div className="flex items-center justify-between px-4 py-3 bg-gray-100 dark:bg-gray-700 border-b border-gray-200 dark:border-gray-600">
           <h2 className="font-semibold text-gray-900 dark:text-white">New Message</h2>
-          <div className="flex items-center gap-1">
-            <button className="p-1.5 hover:bg-gray-200 dark:hover:bg-gray-600 rounded">
-              <Minus className="w-4 h-4 text-gray-500" />
-            </button>
-            <button className="p-1.5 hover:bg-gray-200 dark:hover:bg-gray-600 rounded">
-              <Square className="w-3.5 h-3.5 text-gray-500" />
-            </button>
-            <button
-              onClick={handleDiscard}
-              className="p-1.5 hover:bg-red-100 dark:hover:bg-red-900/30 rounded"
-            >
-              <X className="w-4 h-4 text-gray-500 hover:text-red-500" />
-            </button>
-          </div>
+          <button
+            onClick={handleDiscard}
+            className="p-1.5 hover:bg-red-100 dark:hover:bg-red-900/30 rounded"
+          >
+            <X className="w-4 h-4 text-gray-500 hover:text-red-500" />
+          </button>
         </div>
 
         {/* Form */}
@@ -305,34 +278,7 @@ const ComposeModal = () => {
 
             {/* Editor toolbar */}
             <div className="border border-gray-200 dark:border-gray-600 rounded-lg overflow-hidden">
-              <div className="flex items-center gap-1 p-2 bg-gray-50 dark:bg-gray-700 border-b border-gray-200 dark:border-gray-600">
-                <button className="p-2 hover:bg-gray-200 dark:hover:bg-gray-600 rounded">
-                  <Bold className="w-4 h-4 text-gray-600 dark:text-gray-400" />
-                </button>
-                <button className="p-2 hover:bg-gray-200 dark:hover:bg-gray-600 rounded">
-                  <Italic className="w-4 h-4 text-gray-600 dark:text-gray-400" />
-                </button>
-                <button className="p-2 hover:bg-gray-200 dark:hover:bg-gray-600 rounded">
-                  <Underline className="w-4 h-4 text-gray-600 dark:text-gray-400" />
-                </button>
-                <div className="w-px h-5 bg-gray-300 dark:bg-gray-600 mx-1" />
-                <button className="p-2 hover:bg-gray-200 dark:hover:bg-gray-600 rounded">
-                  <AlignLeft className="w-4 h-4 text-gray-600 dark:text-gray-400" />
-                </button>
-                <div className="w-px h-5 bg-gray-300 dark:bg-gray-600 mx-1" />
-                <button className="p-2 hover:bg-gray-200 dark:hover:bg-gray-600 rounded">
-                  <Link className="w-4 h-4 text-gray-600 dark:text-gray-400" />
-                </button>
-                <button className="p-2 hover:bg-gray-200 dark:hover:bg-gray-600 rounded">
-                  <Smile className="w-4 h-4 text-gray-600 dark:text-gray-400" />
-                </button>
-                <button
-                  onClick={handleAttach}
-                  className="p-2 hover:bg-gray-200 dark:hover:bg-gray-600 rounded"
-                >
-                  <Paperclip className="w-4 h-4 text-gray-600 dark:text-gray-400" />
-                </button>
-              </div>
+              <div className="h-2 bg-gray-50 dark:bg-gray-700 border-b border-gray-200 dark:border-gray-600" />
               
               <textarea
                 value={body}
@@ -341,60 +287,19 @@ const ComposeModal = () => {
                 placeholder="Compose your message here..."
               />
             </div>
-
-            {/* Attachments */}
-            {attachments.length > 0 && (
-              <div className="space-y-2">
-                <p className="text-sm text-gray-500 flex items-center gap-2">
-                  <Paperclip className="w-4 h-4" />
-                  Attachments ({attachments.length})
-                </p>
-                <div className="flex flex-wrap gap-2">
-                  {attachments.map((file, index) => (
-                    <div
-                      key={index}
-                      className="flex items-center gap-2 px-3 py-2 bg-gray-100 dark:bg-gray-700 rounded-lg"
-                    >
-                      <span className="text-sm text-gray-700 dark:text-gray-300">{file.name}</span>
-                      <button
-                        onClick={() => handleRemoveAttachment(index)}
-                        className="p-1 hover:bg-gray-200 dark:hover:bg-gray-600 rounded"
-                      >
-                        <X className="w-4 h-4 text-gray-500" />
-                      </button>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
           </div>
         </div>
 
         {/* Footer */}
         <div className="flex items-center justify-between px-4 py-3 bg-gray-50 dark:bg-gray-700 border-t border-gray-200 dark:border-gray-600">
-          <div className="flex items-center gap-2">
-            <button
-              onClick={handleAttach}
-              className="btn-ghost flex items-center gap-2"
-            >
-              <Paperclip className="w-4 h-4" />
-              Attach Files
-            </button>
-          </div>
+          <div />
           <div className="flex items-center gap-2">
             <button
               onClick={handleDiscard}
               className="btn-ghost text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 flex items-center gap-2"
             >
-              <Trash2 className="w-4 h-4" />
+              <X className="w-4 h-4" />
               Discard
-            </button>
-            <button
-              onClick={handleSaveDraft}
-              className="btn-secondary flex items-center gap-2"
-            >
-              <Save className="w-4 h-4" />
-              Save Draft
             </button>
             <button
               onClick={handleSend}

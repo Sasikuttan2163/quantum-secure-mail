@@ -224,8 +224,6 @@ const SecurityDashboard = () => {
 
         {/* Footer */}
         <div className="flex items-center justify-end px-6 py-4 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 gap-3">
-          <button className="btn-secondary">Export Report (PDF)</button>
-          <button className="btn-secondary">Export Data (JSON)</button>
           <button
             onClick={() => setShowSecurityDashboard(false)}
             className="btn-primary"

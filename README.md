@@ -2,6 +2,7 @@
 
 Desktop email client that integrates Quantum Key Distribution (QKD) with standard email protocols that's compatible with Gmail, Yahoo, and other SMTP and IMAP providers.
 
+See diagrams folder or report for architecture diagrams
 Platform: Windows/Linux (Electron + React)
 
 ## Running the project
@@ -49,35 +50,6 @@ Implemented:
 - No encryption
 - Plaintext only
 - For testing purposes
-
-
-## Architecture
-
-```
-┌─────────────────────────────────────────────────────────┐
-│  Frontend (Electron + React) - Port 3000                │
-│  • Compose emails with security level selection         │
-│  • Fetch and display inbox                              │
-│  • Auto-decrypt encrypted emails on click               │
-└─────────────────┬───────────────────────────────────────┘
-                  │ IPC Bridge
-┌─────────────────▼───────────────────────────────────────┐
-│  Backend (FastAPI) - Port 8001                          │
-│  • POST /send - Encrypt and send via SMTP               │
-│  • POST /fetch - Retrieve emails via IMAP               │
-│  • POST /decrypt - Decrypt with QKD key                 │
-└─────────────────┬───────────────────────────────────────┘
-                  │ REST API
-┌─────────────────▼───────────────────────────────────────┐
-│  QKD Simulator - Port 8000                              │
-│  • GET /enc_keys - Provide encryption keys              │
-│  • GET /dec_keys - Provide decryption keys              │
-│  • ETSI GS QKD 014 compatible                           │
-└─────────────────────────────────────────────────────────┘
-           ▲                          ▼
-           └──────────────────────────┘
-           Gmail SMTP (587) / IMAP (993)
-```
 
 
 ## Configuration

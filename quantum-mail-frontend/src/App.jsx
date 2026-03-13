@@ -1,10 +1,10 @@
 // src/App.jsx
 import React, { useEffect, useState } from 'react';
-import { SplashScreen, LoginScreen, MainDashboard } from './screens';
+import { LoginScreen, MainDashboard } from './screens';
 import useStore from './store/useStore';
 
 function App() {
-  const [appState, setAppState] = useState('splash'); // splash, login, main
+  const [appState, setAppState] = useState('login'); // login, main
   const { isAuthenticated, theme, initializeApp } = useStore();
 
   useEffect(() => {
@@ -17,14 +17,10 @@ function App() {
   }, [theme]);
 
   useEffect(() => {
-    // Initialize app and handle splash screen
+    // Initialize app
     const init = async () => {
       await initializeApp();
-      
-      // Show splash for 2-3 seconds
-      setTimeout(() => {
-        setAppState(isAuthenticated ? 'main' : 'login');
-      }, 2500);
+      setAppState(isAuthenticated ? 'main' : 'login');
     };
 
     init();
@@ -44,16 +40,11 @@ function App() {
     setAppState('login');
   };
 
-  switch (appState) {
-    case 'splash':
-      return <SplashScreen />;
-    case 'login':
-      return <LoginScreen onLoginSuccess={handleLoginSuccess} />;
-    case 'main':
-      return <MainDashboard onLogout={handleLogout} />;
-    default:
-      return <SplashScreen />;
+  if (appState === 'main') {
+    return <MainDashboard onLogout={handleLogout} />;
   }
+  
+  return <LoginScreen onLoginSuccess={handleLoginSuccess} />;
 }
 
 export default App;

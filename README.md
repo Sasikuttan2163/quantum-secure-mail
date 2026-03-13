@@ -1,37 +1,25 @@
 # Quantum Secure Email Client
 
-Desktop email client that integrates Quantum Key Distribution (QKD) with standard email protocols. Compatible with Gmail, Yahoo, and other SMTP/IMAP providers.
+Desktop email client that integrates Quantum Key Distribution (QKD) with standard email protocols that's compatible with Gmail, Yahoo, and other SMTP and IMAP providers.
 
 Platform: Windows/Linux (Electron + React)
 
-## Quick Start
+## Running the project
 
 Requirements:
 - Python 3.12+
 - Node.js 18+
 - Gmail account with App Password
 
-Setup:
-
-```bash
-cd backend && pip install -r requirements.txt
-cd ../quantum-mail-frontend && npm install
-cd ..
-```
-
 ## Features
 
 Implemented:
-- 4 security levels: One-Time Pad, AES-CFB, Kyber-512, plaintext
-- QKD integration using ETSI GS QKD 014 REST API
-- SMTP sending and IMAP receiving
-- Auto-decryption when opening emails
+- 4 security levels implemented: One-Time Pad, AES-CFB, Kyber-512 and plaintext
+- QKD integration based off ETSI GS QKD 014 REST API
+- SMTP for sending emails and IMAP support for receiving
+- Emails automatically decrypted when opened
 - Native Electron desktop app
-
-In progress:
-- Attachment encryption
-- Multi-recipient support
-- Contact management
+- No email cache
 
 ## Security Levels
 
@@ -91,35 +79,6 @@ In progress:
            Gmail SMTP (587) / IMAP (993)
 ```
 
-## Project Structure
-
-```
-quantum-email-client/
-├── .env
-├── test_integration.sh
-├── stop_services.sh
-├── logs/
-├── backend/
-│   ├── main.py
-│   ├── encryption.py
-│   ├── email_sender.py
-│   ├── email_receiver.py
-│   ├── config.py
-│   ├── models.py
-│   └── requirements.txt
-├── qkd-simulator/
-│   ├── main.py
-│   ├── models.py
-│   └── store_keys.py
-└── quantum-mail-frontend/
-    ├── electron/
-    │   ├── main.js
-    │   ├── preload.js
-    │   └── ipc-handlers.js
-    └── src/
-        ├── store/
-        └── components/
-```
 
 ## Configuration
 
@@ -147,115 +106,6 @@ To get a Gmail App Password:
 2. Select "Mail" and generate password
 3. Use the generated password in your `.env` file
 
-## Testing
-
-Start all services:
-
-```bash
-./test_integration.sh
-```
-
-This starts the QKD simulator (port 8000), backend (port 8001), and frontend.
-
-Workflow:
-1. Click "Compose" to create an email
-2. Enter recipient, subject, and body
-3. Select security level
-4. Click "Send"
-5. Click "Inbox" to fetch emails
-6. Click an encrypted email to auto-decrypt and read
-
-Stop services:
-
-```bash
-./stop_services.sh
-```
-
-Direct API testing:
-
-```bash
-curl -X POST http://localhost:8001/send \
-  -H "Content-Type: application/json" \
-  -d '{
-    "to": "recipient@example.com",
-    "subject": "Test",
-    "body": "Hello",
-    "security_level": 2
-  }'
-
-curl -X POST http://localhost:8001/fetch \
-  -H "Content-Type: application/json" \
-  -d '{"folder": "INBOX", "limit": 10}'
-
-curl http://localhost:8000/api/v1/keys/enc_keys
-```
-
-## Development
-
-Run services individually:
-
-QKD Simulator:
-```bash
-cd qkd-simulator
-python main.py
-```
-
-Backend:
-```bash
-cd backend
-python -m uvicorn main:app --reload --host 0.0.0.0 --port 8001
-```
-
-Frontend:
-```bash
-cd quantum-mail-frontend
-npm start
-```
-
-## Security Notes
-
-- Use Gmail App Passwords only
-- QKD simulator is for development, not production
-
-Encrypted emails include custom headers:
-
-```
-X-QuMail-Version: 1.0
-X-QuMail-Security-Level: L2
-X-QuMail-Key-ID: key_12345
-```
-
-## Troubleshooting
-
-Backend not starting:
-```bash
-lsof -i:8001
-tail -f logs/backend.log
-cat .env
-```
-
-Email not sending:
-- Verify Gmail App Password
-- Check backend logs for SMTP errors
-
-Email not decrypting:
-- Check QKD simulator is running on port 8000
-- Verify key_ID matches an available key
-- Check browser console for errors
-
-Frontend not opening:
-```bash
-cd quantum-mail-frontend
-npm cache clean --force
-rm -rf node_modules package-lock.json
-npm install
-```
-
-Frontend connection errors:
-The code uses `127.0.0.1` to force IPv4 connections. Verify with:
-```bash
-curl http://127.0.0.1:8001/health
-```
 
 ## Implementation Status
 
@@ -264,7 +114,6 @@ Core features implemented:
 - Email composition GUI
 - Inbox viewing
 - Message reading
-- Attachment detection (encryption TODO)
 - Python backend for encryption/decryption
 - Key manager integration
 - SMTP sending and IMAP retrieval
@@ -275,16 +124,3 @@ Core features implemented:
 - Windows/Linux support
 - One-Time Pad (L1), AES-256 (L2), Kyber-512 (L3)
 - Auto-decryption
-
-Planned features:
-- Attachment encryption
-- Multi-recipient support (To/CC/BCC)
-- Contact management with public keys
-- Automatic key rotation
-- Persistent storage (SQLite)
-- Full-text search
-- Digital signatures
-
-## License
-
-Educational/Research Project

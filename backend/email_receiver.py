@@ -473,4 +473,4 @@ class EmailReceiver:
 
 
 # Singleton instance
-email_receiver = EmailReceiver()
+email_receiver = EmailReceiver(use_ssl=config.IMAP_USE_SSL)

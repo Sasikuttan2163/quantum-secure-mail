@@ -142,4 +142,4 @@ class EmailSender:
 
 
 # Singleton instance
-email_sender = EmailSender()
+email_sender = EmailSender(use_tls=config.SMTP_USE_TLS)

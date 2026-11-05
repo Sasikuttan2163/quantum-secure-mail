@@ -43,6 +43,7 @@ class SendEmailResponse(BaseModel):
     key_id: Optional[str] = None
     security_level: str
     recipient: str
+    timings: Optional[Dict[str, Any]] = None  # stage latencies in ms (key_request, encryption, smtp, total)
 
 
 class QKDKeyRequest(BaseModel):
@@ -117,3 +118,4 @@ class DecryptEmailResponse(BaseModel):
     email: Optional[EmailData] = None
     decrypted_body: Optional[str] = None
     error: Optional[str] = None
+    timings: Optional[Dict[str, Any]] = None  # stage latencies in ms (fetch, key_retrieval, decrypt, total)

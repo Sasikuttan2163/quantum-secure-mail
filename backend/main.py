@@ -200,6 +200,10 @@ async def send_email(request: SendEmailRequest):
     logger.info("=" * 60)
     
     try:
+        timings: dict = {}
+        import time as _time
+        _t_total = _time.perf_counter()
+
         # Step 1: Fetch QKD key (unless security level is L4)
         if request.security_level == SecurityLevel.L4:
             # No encryption needed
@@ -211,13 +215,16 @@ async def send_email(request: SendEmailRequest):
         else:
             # Fetch quantum key from KME
             logger.info("Fetching quantum key from KME...")
+            _t0 = _time.perf_counter()
             key_id, key = await fetch_qkd_key(
                 slave_sae_id=config.QKD_SLAVE_SAE_ID,
                 key_size=config.DEFAULT_KEY_SIZE
             )
+            timings["key_request_ms"] = round((_time.perf_counter() - _t0) * 1000, 3)
             
             # Step 2: Encrypt the email body
             logger.info(f"Encrypting message with security level {request.security_level.value}")
+            _t0 = _time.perf_counter()
             encrypted_data, metadata = encrypt_message(
                 plaintext=request.body,
                 key=key,
@@ -229,10 +236,12 @@ async def send_email(request: SendEmailRequest):
             
             # Format the encrypted email body with metadata
             encrypted_body = format_encrypted_email_body(encrypted_data, metadata)
+            timings["encryption_ms"] = round((_time.perf_counter() - _t0) * 1000, 3)
             logger.info("Message encrypted successfully")
         
         # Step 3: Send email via SMTP
         logger.info("Sending email via SMTP...")
+        _t0 = _time.perf_counter()
         success = email_sender.send_email(
             from_email=from_email,
             to_email=request.to,
@@ -246,6 +255,8 @@ async def send_email(request: SendEmailRequest):
                 status_code=500,
                 detail="Failed to send email via SMTP"
             )
+        timings["smtp_ms"] = round((_time.perf_counter() - _t0) * 1000, 3)
+        timings["total_ms"] = round((_time.perf_counter() - _t_total) * 1000, 3)
         
         logger.info("Email sent successfully!")
         logger.info("=" * 60)
@@ -255,7 +266,8 @@ async def send_email(request: SendEmailRequest):
             message="Email sent successfully with quantum encryption",
             key_id=key_id,
             security_level=request.security_level.value,
-            recipient=request.to
+            recipient=request.to,
+            timings=timings
         )
     
     except HTTPException:
@@ -355,14 +367,19 @@ async def decrypt_email(request: DecryptEmailRequest):
     logger.info("=" * 60)
     
     try:
+        import time as _time
+        timings: dict = {}
+        _t_total = _time.perf_counter()
+        _t0 = _time.perf_counter()
+
         # Fetch email by ID
         email_data = email_receiver.get_email_by_id(request.folder, request.email_id)
-        
         if not email_data:
             raise HTTPException(
                 status_code=404,
                 detail="Email not found"
             )
+        timings["fetch_ms"] = round((_time.perf_counter() - _t0) * 1000, 3)
         
         # Check if email is encrypted
         if not email_data.get('is_encrypted'):
@@ -392,6 +409,7 @@ async def decrypt_email(request: DecryptEmailRequest):
         
         # Retrieve decryption key from QKD KME
         logger.info("Retrieving decryption key from KME...")
+        _t0 = _time.perf_counter()
         async with httpx.AsyncClient() as client:
             response = await client.post(
                 f"{config.QKD_KME_URL}/api/v1/keys/{config.QKD_MASTER_SAE_ID}/dec_keys",
@@ -412,10 +430,14 @@ async def decrypt_email(request: DecryptEmailRequest):
             
             key = qkd_response.keys[0].key
             logger.info(f"Successfully retrieved decryption key")
+            timings["key_retrieval_ms"] = round((_time.perf_counter() - _t0) * 1000, 3)
         
         # Decrypt the message
         logger.info("Decrypting message...")
+        _t0 = _time.perf_counter()
         decrypted_body = decrypt_message(encrypted_data, key, metadata)
+        timings["decrypt_ms"] = round((_time.perf_counter() - _t0) * 1000, 3)
+        timings["total_ms"] = round((_time.perf_counter() - _t_total) * 1000, 3)
         logger.info("Message decrypted successfully")
         logger.info("=" * 60)
         
@@ -434,7 +456,8 @@ async def decrypt_email(request: DecryptEmailRequest):
                 security_level=metadata.security_level,
                 folder=email_data['folder']
             ),
-            decrypted_body=decrypted_body
+            decrypted_body=decrypted_body,
+            timings=timings
         )
         
     except HTTPException:

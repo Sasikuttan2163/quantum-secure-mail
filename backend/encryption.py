@@ -70,8 +70,6 @@ def encrypt_message(
         raise ValueError(f"Unsupported security level: {security_level}")
     
     return encrypted, metadata
-    
-    return encrypted, metadata
 
 
 def _encrypt_otp(plaintext: str, key: str) -> str:

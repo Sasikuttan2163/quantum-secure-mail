@@ -1,0 +1,30 @@
+[
+  {
+    "key_material_bytes": 256,
+    "keys_needed": 4,
+    "requests_needed": 1,
+    "delivered_bytes": 256,
+    "mean_ms": 12.682
+  },
+  {
+    "key_material_bytes": 1024,
+    "keys_needed": 16,
+    "requests_needed": 2,
+    "delivered_bytes": 1024,
+    "mean_ms": 26.503
+  },
+  {
+    "key_material_bytes": 4096,
+    "keys_needed": 64,
+    "requests_needed": 7,
+    "delivered_bytes": 4096,
+    "mean_ms": 95.295
+  },
+  {
+    "key_material_bytes": 16384,
+    "keys_needed": 256,
+    "requests_needed": 26,
+    "delivered_bytes": 16384,
+    "mean_ms": 373.343
+  }
+]

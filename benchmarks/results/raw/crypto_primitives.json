@@ -1,0 +1,13 @@
+{
+  "message_bytes": 65536,
+  "aes256cfb_encrypt_ms": 4.746,
+  "aes256cfb_decrypt_ms": 4.474,
+  "aes_encrypt_MBps": 13.17,
+  "kyber512_keygen_ms": 4.287,
+  "kyber512_encaps_ms": 5.562,
+  "kyber512_decaps_ms": 7.792,
+  "otp_xor_listcomp_ms": 8.243,
+  "otp_xor_zip_ms": 5.924,
+  "otp_xor_bigint_ms": 0.26,
+  "sha256_ms": 0.012173
+}

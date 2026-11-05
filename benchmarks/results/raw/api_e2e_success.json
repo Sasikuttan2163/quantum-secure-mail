@@ -1,0 +1,22 @@
+{
+  "L1": {
+    "success": 5,
+    "trials": 5,
+    "success_rate_pct": 100.0
+  },
+  "L2": {
+    "success": 5,
+    "trials": 5,
+    "success_rate_pct": 100.0
+  },
+  "L3": {
+    "success": 5,
+    "trials": 5,
+    "success_rate_pct": 100.0
+  },
+  "L4": {
+    "success": 5,
+    "trials": 5,
+    "success_rate_pct": 100.0
+  }
+}

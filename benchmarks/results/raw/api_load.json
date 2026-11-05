@@ -1,0 +1,52 @@
+[
+  {
+    "concurrency": 1,
+    "messages": 20,
+    "failures": 0,
+    "wall_s": 0.839,
+    "msgs_per_sec": 23.85,
+    "latency_mean_ms": 41.787,
+    "latency_median_ms": 40.252,
+    "latency_p95_ms": 75.994
+  },
+  {
+    "concurrency": 2,
+    "messages": 20,
+    "failures": 0,
+    "wall_s": 0.336,
+    "msgs_per_sec": 59.44,
+    "latency_mean_ms": 32.905,
+    "latency_median_ms": 30.661,
+    "latency_p95_ms": 61.364
+  },
+  {
+    "concurrency": 4,
+    "messages": 20,
+    "failures": 0,
+    "wall_s": 0.345,
+    "msgs_per_sec": 57.98,
+    "latency_mean_ms": 64.961,
+    "latency_median_ms": 54.273,
+    "latency_p95_ms": 111.992
+  },
+  {
+    "concurrency": 8,
+    "messages": 20,
+    "failures": 0,
+    "wall_s": 0.337,
+    "msgs_per_sec": 59.4,
+    "latency_mean_ms": 120.625,
+    "latency_median_ms": 125.431,
+    "latency_p95_ms": 160.742
+  },
+  {
+    "concurrency": 16,
+    "messages": 20,
+    "failures": 0,
+    "wall_s": 0.316,
+    "msgs_per_sec": 63.36,
+    "latency_mean_ms": 211.244,
+    "latency_median_ms": 246.481,
+    "latency_p95_ms": 267.403
+  }
+]

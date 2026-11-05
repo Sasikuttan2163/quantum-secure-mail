@@ -1,0 +1,519 @@
+\documentclass[conference]{IEEEtran}
+\IEEEoverridecommandlockouts
+% The preceding line is only needed to identify funding in the first footnote. If that is unneeded, please comment it out.
+\usepackage{cite}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{algorithmic}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage{xcolor}
+\providecommand{\tightlist}{\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+\begin{document}
+
+\title{Design and Implementation of a Quantum-Secure Email System Using Quantum Key Distribution and Post-Quantum Cryptography\\
+}
+
+\author{\IEEEauthorblockN{Souparno Nag}
+\IEEEauthorblockA{\textit{School of Computer Science Engineering (SCOPE)} \\
+Vellore Institute of Technology\\
+Chennai, India \\
+souparnonag2004@gmail.com}
+\and
+\IEEEauthorblockN{Abhinav Anil}
+\IEEEauthorblockA{\textit{School of Computer Science Engineering (SCOPE)} \\
+Vellore Institute of Technology\\
+Chennai, India \\
+abhinav.anil.2k5@gmail.com}
+\and
+\IEEEauthorblockN{M Sujatha}
+\IEEEauthorblockA{\textit{School of Computer Science and Engineering (SCOPE)} \\
+Vellore Institute of Technology\\
+Chennai, India \\
+sujatha.m@vit.ac.in}
+\and
+\IEEEauthorblockN{R Dhanalakshmi}
+\IEEEauthorblockA{\textit{Center for Cyber Physical Systems} \\
+\textit{School of Computer Science and Engineering (SCOPE)}\\
+Vellore Institute of Technology \\
+Chennai, India \\
+dhanalakshmi.r@vit.ac.in}
+}
+
+\maketitle
+
+\begin{abstract}
+Quantum computers are full of great promise and peril for the future of cryptography. Conventional public-key cryptography, which is commonly used in many secure communication networks, is in peril of being compromised by the advent of quantum computers that can easily crack the existing encryption techniques. Quantum Key Distribution (QKD) is a powerful solution for the problem of secure communication using the principles of quantum physics. The aim of this paper is to propose a system of secure email communication using the principles of QKD while being compatible with the existing email protocols. The proposed system is of a hybrid nature, consisting of a frontend client, backend encryption, and a simulated QKD Key Management Entity. The results of the tests performed have confirmed the fact that quantum security can be integrated with the existing communication networks without the need for revolutionizing the existing communication infrastructure.
+\end{abstract}
+
+\section{Introduction}
+The essence of secure communication forms the absolute core of digital life. Among the prominent forms of email usage is the personal, corporate, and government level of exchange. However, the widely used encryption techniques such as RSA and Elliptic Curve Cryptography rely on computational assumptions that can be easily defeated by the advent of large-scale quantum computers. Shor's algorithm has the potential to break the widely used public-key cryptosystems and compromise the long-term viability of data privacy \cite{b1}.
+
+The emergence of the Harvest Now, Decrypt Later (HNDL) threat is another major issue in the field of data encryption. This threat involves the collection of data that will be decrypted in the future when the technology becomes available \cite{b5}.
+
+Quantum Key Distribution (QKD) provides a mathematically safe way for the distribution of keys using the principles of quantum mechanics such as the no-cloning theorem and measurement disturbance. The no-cloning theorem ensures that any eavesdropping on the key distribution will immediately alert the users \cite{b5}. The deployment of Quantum Key Distribution in the network, however, faces critical issues concerning the routing of the network, scalability, and the integration of the technology into the already established infrastructure \cite{b2}.
+
+Current developments have clearly established that Quantum Key Distribution can be merged into the optical network and the 5G network for the safe transfer of information over large distances \cite{b8}. Researchers are particularly focused on combining the Quantum Key Distribution technology with classical and quantum communication for the development of stronger communication channels \cite{b10}.
+
+In this paper, we propose a quantum-secure email client architecture that pairs QKD-based key management with traditional email services like SMTP and IMAP. We introduce multiple security tiers so users can pick the right encryption based on their specific confidentiality needs. By bringing together QKD-generated keys, symmetric encryption and post-quantum algorithms, this approach outlines a realistic path for rolling out quantum-secure messaging over existing email backbones.
+
+\section{Related Works}
+
+There has been a significant increase in the number of research studies carried out in the field of quantum secure communications in the past few years, especially in the context of successfully integrating QKD into the existing network architecture. A number of researchers have focused on the hurdles and the solutions in the context of implementing QKD-based security in the real world.
+
+A study by Anantraj et al. talked about the double-edged nature of quantum computing and the potential of this technology in providing enhanced security while at the same time posing a threat to classical cryptography. They highlighted the need for enhancing the security of the network using QKD while at the same time addressing the vulnerabilities of the quantum computing environment \cite{b1}.
+
+The issues associated with the routing and scalability of the QKD network have also been the focus of a number of researchers. Kong has carried out a study in the context of the hurdles associated with the routing of the QKD network that relies on the trusted nodes for the purpose of routing \cite{b2}.
+
+Apart from the issues faced in the implementation of the QKD network, researchers have also examined the vulnerabilities in the implementation of post-quantum cryptography. Teague et al. examined the cloud platforms to identify the side-channel attacks faced in the implementation of post-quantum cryptography. \cite{b3}
+
+They emphasized the importance of the deployment of the quantum-resistant math. 
+Other teams have worked on making QKD protocols leaner and safer. Mukit et al. pitched a discrete-modulated continuous-variable QKD method that handles noise better and tightens security by mixing in decoy states and stronger error correction protocols \cite{b4}.
+ 
+Purushottam et al. showcased QKD's massive potential to reinforce communication networks. They proved QKD can run alongside classical encryption to build secure channels that block both classical and quantum threats \cite{b5}.
+
+Real-world tests have also shown that large-scale QKD networks are highly doable. Mehic et al. built a virtual QKD network ecosystem within the Czech national grid. This showed exactly how QKD can plug into live systems to handle critical national security needs \cite{b6}.
+
+Along those same lines, Sena et al. detailed the QLine system's rollout for a metropolitan QKD network inside the Berlin OpenQKD testbed. Their project proved that cities can integrate QKD into their communication grids while keeping performance and reliability high \cite{b7}.
+
+Investigations into the integration of QKD with the most recent technology are still in the pipeline. Oliveira et al. proposed a solution for the integration of QKD with free-space optical communications and 5G networks for the secure interchange of keys in heterogeneous and complicated environments \cite{b8}.
+
+Apart from QKD, some researchers are searching for alternative techniques for the generation of secure keys. Al-Hyari et al. proposed the generation of robust encryption keys by using chaotic maps and the Collatz conjecture. The proposed solution showed great potential in the enhancement of the randomness of the generated keys in image cryptography \cite{b9}.
+
+The basis of this work rests on two significant findings. Shor showed that a quantum computer can factor integers and calculate discrete logarithms in polynomial time, challenging the difficulty assumptions related to RSA and elliptic curve cryptography \cite{b11}. Bennett and Brassard's BB84 protocol, on the other hand, demonstrated that quantum mechanics could be utilized to share secret keys, where any eavesdropping effort would cause noticeable disturbances \cite{b12}. The implementation of QKD in practical systems has since necessitated standardized interfaces. ETSI GS QKD 014 specifies a RESTful API that enables applications to request keys from a Key Management Entity, facilitating the integration of QKD without revealing the underlying quantum hardware \cite{b13}. From the post-quantum perspective, NIST has standardized the Module-Lattice-Based Key-Encapsulation Mechanism (ML-KEM), based on CRYSTALS-Kyber, as FIPS 203 \cite{b14}. Expanding on these areas, Ricci et al. developed a hybrid key combiner on FPGA hardware that integrates a traditional key exchange, a post-quantum KEM, and keys derived from QKD. They demonstrated its security against chosen-ciphertext attacks, ensuring that an attacker must compromise all three components to retrieve the ultimate key \cite{b15}.
+
+Lastly, Carlos et al. advocated for the adoption of the concept of hybrid security mechanisms that integrate classical cryptography, post-quantum cryptography, and QKD. The results obtained by the authors indicate that the proposed solution is the most realistic and optimal solution for the achievement of secure communications in the quantum environment \cite{b10}.
+
+\section{Methodology}
+
+The proposed system describes a quantum-secure email client that integrates both QKD (Quantum Key Distribution), as well as classical email infrastructure. The primary objective of this methodology is to be able to demonstrate that quantum-generated keys can be plugged into regular communications systems and do not require modifications to established protocols such as SMTP and IMAP.
+
+The architecture possesses a hybrid cryptographic model, i.e. quantum keys generated by the QKD which are used in combination with classical encryption algorithms (OTP, AES) as well as post-quantum cryptographic algorithms (CRYSTALS). The system has a modular architecture consisting of three main components: Frontend Email Client, the Backend Encryption Service and the QKD Key Generator. The components communicate among each other using various APIs to perform key management, encryption, message recieval and transmission.
+
+The methodology follows a structure around system design, encryption systems, key management techniques and the overall architecture of email transmission.
+
+\subsection{System Architecture}\label{AA}
+
+The system architecture describes a modular approach, separating the project into three components on the basis of user interface, encryption and email transmission and quantum key process management. The modularity provides benefits such as scalability, security and seamless integration with existing email services and infrastructure.
+
+\subsubsection{Frontend Email Client}
+
+The frontend component is the user interface via which the users interact with the email client. It provides the platform for writing emails, selecting preferred encryption levels, sending emails, receiving emails and reading said received emails. Visual indicators were defined within the frontend in order to display whether email in question had been decrypted and what security levels have been used.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=\linewidth]{frontend.png}
+\caption{Frontend Architecture}
+\end{figure}
+
+Key responsibilities of the frontend include:
+\begin{itemize}
+    \item Composition and formatting of emails
+    \item Selection of encryption level
+    \item Display of encrypted and decrypted messages
+    \item Using APIs to communicate with the backend
+    \item Monitoring key usage and encryption status
+\end{itemize}
+
+The frontend was implemented using Electron, which is a desktop application framework that supports cross platform operation (Windows, Linux, Mac, etc.). This layer singularly serves the purpose of presentation and as a user interface. It does not perform any cryptographic functions, which are delegated to the backend.
+
+Going into details, the GUI is responsible for the following:
+
+\begin{itemize}
+    \item user authentication and authorization
+    \item composing of the email and selection of encryption level
+    \item viewing the contents of the inbox
+    \item reading the messages
+    \item handling of attachments
+\end{itemize}
+
+The backend is responsible for:
+
+\begin{itemize}
+    \item encryption and decryption of messages
+    \item interaction with the Quantum Key Manager
+    \item sending messages following SMTP
+    \item receiving messages following IMAP
+\end{itemize}
+
+\subsubsection{Backend Encryption Service}
+
+The backend component of the email client handles the cryptographic operations, as well as the communication with email servers following
+SMTP and IMAP protocols.
+
+The main responsibilities of the backend component include:
+
+\begin{itemize}
+\tightlist
+\item
+  Handling the encryption and decryption of email content
+\item
+  Requesting keys from the KME following API protocols
+\item
+  Sending emails to servers via SMTP
+\item
+  Retrieving emails from the server via IMAP
+\item
+  Managing message formatting and encryption metadata
+\end{itemize}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=\linewidth]{system_architecture.png}
+\caption{System Architecture}
+\end{figure}
+
+When a user sends an email, the backend performs the following operations in order. It determines the encryption standard requested by the user and validates the email content. It then requests the required key and keyId from the KME. The message is encrypted using the key and the keyId is placed in the metadata. Following this, the email client forwards it to an email server using SMTP. Similarly, when an email is obtained through the IMAP protocol, the backend extracts the encryption metadata. The keyId is used to retrieve the key from the KME and decryption is performed before sending it to the frontend.
+
+Similarly, when an email is obtained through the IMAP protocol, the backend extracts the encryption metadata.
+
+The backend communicates with the frontend by exposing REST APIs. These include:
+
+\begin{itemize}
+\item
+  /send: POST method for sending emails
+\item
+  /fetch: POST method for retrieving emails
+\item
+  /decrypt: POST method for key retrieval and decryption
+\end{itemize}
+
+\subsubsection{Quantum Key Management Entity (KME)}
+
+The quantum key management entity acts as a simulator for a real QKD network component responsible for generation and distribution of quantum keys. In a real QKD environment, the generation of keys is performed through quantum channels between two endpoints. However, for the purposes of demonstration, a simulator was created which generates randomized, cryptographically secure keys. The simulator is exposed to the backend using REST APIs, which follow the ETSI standard.
+
+The KME performs the following tasks:
+\begin{itemize}
+\item
+  Generating quantum-alike randomised keys
+\item
+  Assigning unique identifiers (keyId) to each key
+\item
+  Storing generated keys and corresponding keyIds in a persistent  storage (database)
+\item
+  Tracking the usage and lifecycle of quantum keys
+\end{itemize}
+
+Each generated key is assigned a universally unique identifier (UUID), which is then embedded in the metadata of the encrypted email, so as to later retrieve while decrypting.
+
+\subsection{API Design}
+
+The system makes use of REST APIs for functioning.
+The KME implemented its endpoints in compliance with ETSI GS QKD 014 standard. These are used by the backend for generating and retrieving quantum keys.
+
+\begin{center}
+\begin{tabular}{|p{1.5cm}|p{2cm}|p{2cm}|p{2cm}|}
+\hline
+\textbf{Endpoint} & \textbf{Method} & \textbf{Purpose} & \textbf{Key Operations} \\ 
+\hline
+/send & POST & Send encrypted email & QKD key fetch, encryption, SMTP transmission \\ 
+\hline
+/fetch & POST & Retrieve emails & IMAP connection, email parsing, encryption detection \\ 
+\hline
+/decrypt & POST & Decrypt quantum-encrypted email & Key retrieval, decryption, plaintext extraction \\ 
+\hline
+/health & GET & Service Health Check & Backend and KME connectivity verification \\ 
+\hline
+\end{tabular}
+\end{center}
+
+Similarly, for communicating with the frontend, the backend exposes a few REST API endpoints.
+
+\begin{center}
+\begin{tabular}{|p{1.5cm}|p{1.5cm}|p{1.5cm}|p{2.5cm}|}
+\hline
+\textbf{Endpoint} & \textbf{Method} & \textbf{ETSI Specification} & \textbf{Implementation} \\ 
+\hline
+/api/v1/ keys/ {sae\_id}/ enc\_keys & POST & Key generation for encryption & Generates fresh quantum keys \\ 
+\hline
+/api/v1/ keys/ {sae\_id}/ dec\_keys & POST & Key generation for decryption & Returns previously generated keys \\ 
+\hline
+/api/v1/ keys/ {sae\_id}/ status & GET & Key statistics \\ 
+\hline
+\end{tabular}
+\end{center}
+
+\subsection{Multi-Level Encryption Framework}
+
+To provide flexibility and allow users to balance security and performance, the system implements a multi-level encryption framework consisting of four different security modes. Each level represents a different cryptographic strategy.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=\linewidth]{security_infrastructure.png}
+\caption{Security Infrastructure}
+\end{figure}
+
+\subsubsection{Level 1: One-Time Pad (OTP)}
+
+The One-Time Pad is the most secure encryption method implemented in the system. It uses a quantum-derived key that is equal in length to the message being encrypted. The encryption process performs a bitwise XOR operation between the plaintext message and the quantum key.
+
+Characteristics of this level include:
+\begin{itemize}
+    \item Perfect theoretical secrecy
+    \item No reliance on computational hardness assumptions
+    \item High key consumption rate
+    \item Suitable for highly sensitive short messages
+\end{itemize}
+
+Because the key must be at least as long as the message, this method requires a continuous supply of quantum keys, making it impractical for very large communications.
+
+\subsubsection{Level 2: Quantum-Aided AES-256-GCM}
+
+The second security level uses quantum-generated keys as the basis for AES-256 symmetric encryption. In this approach, the quantum key is processed using a hashing function to generate a fixed-size AES encryption key.
+
+The AES-256 algorithm operates in Galois/Counter Mode (GCM), which provides both confidentiality and authentication. This ensures that any modification to the encrypted message can be detected during decryption.
+
+Advantages of this level include:
+\begin{itemize}
+    \item Efficient encryption performance
+    \item Strong security guarantees
+    \item Minimal quantum key consumption
+    \item Practical for everyday communication
+\end{itemize}
+
+This mode serves as the default encryption level for most messages in the system.
+
+\subsubsection{Level 3: Post-Quantum Cryptography Integration}
+
+The third security level integrates post-quantum cryptographic algorithms with quantum key distribution. This hybrid approach ensures that the system remains secure even if quantum key distribution is temporarily unavailable.
+
+The system uses a lattice-based key encapsulation mechanism to generate a shared secret between the sender and receiver. This secret is combined with quantum key material to produce the final encryption key used for message protection.
+
+This hybrid approach provides several benefits:
+\begin{itemize}
+    \item Resistance to quantum computer attacks
+    \item Additional security layers
+    \item Independence from continuous QKD availability
+    \item Long-term data protection
+\end{itemize}
+
+Although this level introduces additional computational overhead compared to AES encryption, it significantly improves security for sensitive long-term communications.
+
+\subsubsection{Level 4: Baseline Mode (No Encryption)}
+
+The fourth level is used primarily for testing and benchmarking purposes. In this mode, the message is encoded using Base64 encoding without applying any cryptographic protection.
+
+This level allows developers to:
+\begin{itemize}
+    \item Compare encryption performance
+    \item Verify system functionality
+    \item Debug message formatting and transmission
+\end{itemize}
+
+\subsection{Email Encryption Workflow}
+
+The encryption procedure follows a structured workflow, which ensures proper processing and security of messages before transmission.
+
+\subsubsection{Message Composition}
+
+While composing the message from the frontend, the user decides the desired level of encryption while factoring sensitivity of the message to be sent.
+
+The frontend further validates the following parameters:
+\begin{itemize}
+\item
+  Sender and receiver email address
+\item
+  Message subject and body
+\item
+  Encryption level selected
+\end{itemize}
+
+Following validation, the frontend sends a POST request to /send endpoint of the backend.
+
+\subsubsection{Key Acquisition}
+
+Based on the length of the message and the encryption level decided, the backend sends an API request to the KME for generating a key. This request includes two parameters: key length and number of keys.
+
+The KME generates a cryptographically secure random key and assigns a unique identifier to the key. This key and keyId are stored in the database. Both are then sent to the backend.
+
+\subsubsection{Encryption Process}
+
+Based on the security level chosen by the sender, the appropriate encryption algorithm is chosen.
+
+The next steps include:
+\begin{itemize}
+\item
+  Preparing the plaintext message
+\item
+  Applying the selected encryption algorithm
+\item
+  Generating corresponding encryption metadata
+\item
+  Embedding the encrypted content into a structured format
+\end{itemize}
+
+The resulting encrypted message consists of both the ciphertext, as well as the metadata.
+
+\subsection{Email Decryption Workflow}
+
+Upon opening an encrypted email, the decryption process is automatically initiated.
+
+The decryption workflow includes the following steps:
+\begin{itemize}
+\item
+  Message Detection - The email client scans the email to determine
+  the presence of encrypted content.
+\item
+  Extracting Metadata - If encryption presence is detected, the client
+  extracts the metadata containing the keyId and information on the
+  algorithm.
+\item
+  Key Retrieval - The keyId is sent to the KME, which then returns the
+  corresponding quantum key.
+\item
+  Decryption Execution - Following the appropriate decryption algorithm,
+  the retrieved quantum key is used to process the ciphertext to
+  plaintext.
+\item
+  Message Rendering - The decrypted message is now converted into a
+  readable format, to be displayed to the user.
+\end{itemize}
+
+\subsection{Persistent Key Storage}\label{SCM}
+
+Traditional QKD systems make the assumption that keys are meant for single use and to be discarded after that. However, in order to use them for practical purposes, it is essential to maintain a persistent key storage mechanism.
+
+Keys are stored in a structured database which contain the following information:
+\begin{itemize}
+    \item Key identifier
+    \item Key value
+    \item Usage count
+    \item Associated sender and receiver identifiers
+\end{itemize}
+
+Each time a key is retrieved for decryption, its usage counter
+is incremented. This allows the system to track key usage
+patterns and detect potential anomalies.
+
+\subsection{Security Considerations}
+
+Several security considerations were incorporated during system design to ensure robust protection against potential threats.
+
+Key security mechanisms include:
+\begin{itemize}
+    \item Isolation of cryptographic operations within the backend
+    \item Controlled API communication between system components
+    \item Secure key management with unique identifiers
+    \item Protection against unauthorized key retrieval
+    \item Metadata validation during decryption
+\end{itemize}
+
+The hybrid architecture also provides defense-in-depth by combining multiple encryption approaches, ensuring that the compromise of one layer does not automatically expose the entire system.
+
+\section{Results and Evaluation}
+
+The system was evaluated on four metrics: end-to-end latency by pipeline
+stage, key-material consumption, transport overhead, and
+correctness/interoperability. Each measurement is the mean over repeated
+trials (20 trials per configuration for cryptographic operations, 12 for
+end-to-end sends, 100 for correctness testing). Level~4 (plaintext) serves
+as the baseline throughout.
+
+\begin{table}[t]
+\centering
+\caption{Comparative performance of security levels (4\,KiB message).}
+\label{tab:summary}
+\begin{tabular}{|l|r|r|r|r|}
+\hline
+\textbf{Level} & \textbf{Enc.\ (ms)} & \textbf{Dec.\ (ms)} & \textbf{Key (bytes)} & \textbf{Overhead} \\
+\hline
+L1 (OTP)        & 3.66  & 0.41 & 4096 & 41.1\% \\
+L2 (AES-256)    & 0.15  & 0.12 & 32   & 42.3\% \\
+L3 (Kyber-512)  & 32.21 & 2.89 & 32   & 121.9\% \\
+L4 (None)       & 0.005 & $<$0.01 & 0 & 7.6\%  \\
+\hline
+\end{tabular}
+\end{table}
+
+\subsection{Latency and Computational Cost}
+
+Table~\ref{tab:summary} shows the costs for each level. AES-256 (L2) is the secured mode. The Kyber-512 hybrid (L3) takes on 32.2\,ms of CPU time for each encryption compared to 0.15\,ms for AES. That is a $217\times$ increase, which highlights the cost of lattice‑based generation and encapsulation. Kyber512 key generation takes 4.3\,ms and encapsulation takes 5.6\,ms. This shows the overhead that post‑quantum cryptography adds and it is a clear measurable trade‑off for its independence from continuous QKD availability.
+
+End-to-end profiling of the \texttt{/send} pipeline (Fig.~\ref{fig:stages})
+reveals that the KME key request makes up 90\% of the total latency roughly 30\,ms for all encrypted levels. Encryption itself adds 0.3\,ms for L1 and L2 and up to 7.0\,ms, for L3. SMTP transmission adds about 3\,ms. Therefore the quantum key exchange, not the cipher is the cost of quantum‑secured email.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\linewidth]{e2e_send_stages_by_level.png}
+\caption{End-to-end \texttt{/send} latency decomposed into KME key request,
+encryption, and SMTP transmission stages (2\,KiB message).}
+\label{fig:stages}
+\end{figure}
+
+\subsection{Key-Material Consumption}
+
+The main difference between the levels lies in how quantum key material is used up. Since the one-time pad needs a key thats exactly as long as the message level L1 uses material at the same rate as the message size. So if the message is big L1 uses key.. Levels L2 and L3 use just 32 bytes, no matter how long the message is.
+
+In a test with 100 messages of varying sizes—ranging from 100 bytes to 5 kilobytes totaling 253.5 kilobytes—L1 used 253,503 bytes of material. In comparison L2 and L3 each used 3,200 bytes. That’s a difference of 79 times. This is shown in Figure~\ref{fig:keyuse}.
+
+This result shows that using the one-time pad means you need a supply of key material. The quantum key distribution system has to keep providing keys.. Hybrid and symmetric modes don’t have this issue. They work fine when key generation is limited.
+
+In this case the key management engine (KME) could generate keys at 76.3, per second. To get a 16-kilobyte one-time pad it needed 26 requests—taking 373 milliseconds. That’s manageable. It shows how much more demanding the pure OTP approach is.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\linewidth]{key_consumption_batch.png}
+\caption{Cumulative quantum key material consumed over a batch of 100
+emails. OTP consumption scales linearly with total message volume, while
+AES-256 and Kyber-512 consume a constant 32 bytes per message.}
+\label{fig:keyuse}
+\end{figure}
+
+\subsection{Transport Overhead}
+
+Because ciphertext is embedded in Base64 within an email body the transport overhead approaches about 33 percent for large messages across all encryption levels. For messages the fixed metadata becomes the main factor. At a 128-byte plaintext L3 has 2,900 percent overhead because of the approximately 3 kilobytes of Kyber ciphertext and key material added per message. In comparison L1 and L2 have 245 to 318 percent overhead. So overhead is minimal for email-sized traffic but becomes an important factor, for short highly-sensitive messages.
+
+\subsection{Correctness and Interoperability}
+
+Encrypt–decrypt round-trip testing across 100 trials per level produced a 100 percent success rate at every security level. Full end-to-end trials, which included (compose $\rightarrow$ key request $\rightarrow$ SMTP transmission $\rightarrow$
+IMAP retrieval $\rightarrow$ KME key retrieval $\rightarrow$ decryption) also succeeded in 100 percent of 20 trials across all four levels. The custom X-Quantum-* headers survived standard MIME transport unmodified. Messages were transmitted through email servers without needing any modifications, to the underlying SMTP or IMAP infrastructure.
+
+\begin{table}[t]
+\centering
+\caption{Stage decomposition of \texttt{/send} (2\,KiB, mean of 12 trials).}
+\label{tab:stages}
+\begin{tabular}{|l|r|r|r|r|}
+\hline
+\textbf{Level} & \textbf{Key req.\ (ms)} & \textbf{Encrypt (ms)} & \textbf{SMTP (ms)} & \textbf{Total} \\
+\hline
+L1 & 29.7 & 0.27 & 3.16 & 33.2 \\
+L2 & 29.2 & 0.30 & 3.08 & 32.7 \\
+L3 & 30.1 & 6.96 & 3.07 & 40.3 \\
+L4 & --   & --   & 1.72 & 1.8  \\
+\hline
+\end{tabular}
+\end{table}
+
+\section*{Conclusion}
+
+This research presented a quantum-secure email communication framework that integrates Quantum Key Distribution with classical and post-quantum cryptographic techniques. The proposed system demonstrates how quantum-derived keys can be integrated into existing communication infrastructure without modifying standard email protocols.
+
+The implementation introduces a flexible multi-level security architecture that allows users to select different encryption methods based on their security requirements. By combining QKD, symmetric encryption, and post-quantum cryptography, the system provides strong protection against both classical and future quantum attacks.
+
+Experimental results show that the framework successfully enables secure email communication using quantum-derived keys while maintaining compatibility with traditional email services. The hybrid architecture also addresses practical challenges associated with key management and encryption performance.
+
+Future work may focus on integrating real QKD hardware instead of simulated key generation, improving scalability for large-scale communication networks, and enhancing protection against advanced side-channel and endpoint attacks.
+
+% \section*{References}
+
+\begin{thebibliography}{00}
+\bibitem{b1} I. Anantraj, B. Umarani, C. Karpagavalli, C. Usharani, and S. J. Lakshmi, "Quantum computing's double-edged sword: Unravelling the vulnerabilities in quantum key distribution for enhanced network security," in 2023 International Conference on Next Generation Electronics (NEleX), Vellore, India, 2023, pp. 1–5, doi: 10.1109/NEleX59773.2023.10420896.
+\bibitem{b2} P.-Y. Kong, "Challenges of routing in quantum key distribution networks with trusted nodes for key relaying," IEEE Communications Magazine, vol. 62, no. 7, pp. 124–130, 2024, doi: 10.1109/MCOM.023.2300376.
+\bibitem{b3} T. Teague, M. Mahzabin, A. Nelson, D. Andrews, and M. Huang, "Towards cloud-based infrastructure for post-quantum cryptography side-channel attack analysis," in 2023 IEEE Design Methodologies Conference (DMC), Miami, FL, USA, 2023, pp. 1–6, doi: 10.1109/DMC58182.2023.10412485.
+\bibitem{b4} A. Mukit, M. S. H. Bijoy, S. M. Choudhury, and M. T. Mahmud, "Discrete modulated continuous-variable quantum key distribution: Security and noise tolerance enhanced by decoy states and effective error correction protocol integration," in 2023 IEEE International Conference on Telecommunications and Photonics (ICTP), Dhaka, Bangladesh, 2023, pp. 1–5, doi: 10.1109/ICTP60248.2023.10490525.
+\bibitem{b5} V. V. Purushottam, M. S, and N. Guruprasad, "Enhancing security in communication networks through quantum key distribution," in 2024 International Conference on IoT, Communication and Automation Technology (ICICAT), Gorakhpur, India, 2024, pp. 23–26, doi: 10.1109/ICICAT62666.2024.10922867.
+\bibitem{b6} M. Mehic, E. Dervisevic, P. Fazio, and M. Voznak, "Virtual quantum key distribution network ecosystem: The national Czech QKD network," IEEE Network, vol. 39, no. 3, pp. 173–179, 2025, doi: 10.1109/MNET.2025.3540705.
+\bibitem{b7} M. Sena, G. Harder, R. Döring, R. Braun, M. Ritter, O. Holschke, M. Kaplan, and M. Geitz, "Deploying the Qline system for a QKD metropolitan network on the Berlin OpenQKD testbed," IEEE Photonics Journal, vol. 17, no. 1, pp. 1–11, 2025, doi: 10.1109/JPHOT.2024.3516138.
+\bibitem{b8} R. D. Oliveira, P. Zhang, Z. C. M. Davidson, E. Hugues Salas, E. A. Kosmatos, A. Stavdas, A. Lord, J. Rarity, R. Nejabati, and D. Simeonidou, "On the integration and control of quantum key distribution over free-space optics and 5G networks," in 2024 International Conference on Optical Network Design and Modeling (ONDM), Madrid, Spain, 2024, pp. 1–6, doi: 10.1109/ONDM61578.2024.10582626.
+\bibitem{b9} A. Al-Hyari, C. Obimbo, M. M. Abu-Faraj, and I. Al-Taharwa, "Generating powerful encryption keys for image cryptography with chaotic maps by incorporating Collatz conjecture," IEEE Access, vol. 12, pp. 4825–4844, 2024, doi: 10.1109/ACCESS.2024.3349470.
+\bibitem{b10} C. Rubio García, A. Cano Aguilera, C. Stan, J. J. Vegas Olmos, S. Rommel, and I. Tafur Monroy, "Enhanced network security protocols for the quantum era: Combining classical and post-quantum cryptography, and quantum key distribution," IEEE Journal on Selected Areas in Communications, vol. 43, no. 8, pp. 2765–2781, 2025, doi: 10.1109/JSAC.2025.3568011.
+\bibitem{b11} P. W. Shor, "Polynomial-time algorithms for prime factorization and discrete logarithms on a quantum computer," SIAM Review, vol. 41, no. 2, pp. 303–332, 1999, doi: 10.1137/S0036144598347011.
+\bibitem{b12} C. H. Bennett and G. Brassard, "Quantum cryptography: Public key distribution and coin tossing," Theoretical Computer Science, vol. 560, pp. 7–11, 2014, doi: 10.1016/j.tcs.2014.05.025.
+\bibitem{b13} Quantum Key Distribution (QKD); Protocol and Data Format of REST-Based Key Delivery API, ETSI GS QKD 014 V1.1.1, European Telecommunications Standards Institute, Feb. 2019.
+\bibitem{b14} National Institute of Standards and Technology, "Module-lattice-based key-encapsulation mechanism standard," Federal Information Processing Standards Publication FIPS 203, Aug. 2024, doi: 10.6028/NIST.FIPS.203.
+\bibitem{b15} S. Ricci, P. Dobias, L. Malina, J. Hajny, and P. Jedlicka, "Hybrid keys in practice: Combining classical, quantum and post-quantum cryptography," IEEE Access, vol. 12, pp. 23206–23219, 2024, doi: 10.1109/ACCESS.2024.3364520.
+\end{thebibliography}
+% \vspace{12pt}
+
+\end{document}

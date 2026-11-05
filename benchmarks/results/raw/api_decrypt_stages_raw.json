@@ -1,0 +1,272 @@
+[
+  {
+    "level": "L1",
+    "trial": 0,
+    "rtt_ms": 126.857,
+    "fetch_ms": 84.25,
+    "key_retrieval_ms": 39.364,
+    "decrypt_ms": 0.143,
+    "total_ms": 124.412
+  },
+  {
+    "level": "L1",
+    "trial": 1,
+    "rtt_ms": 84.634,
+    "fetch_ms": 41.555,
+    "key_retrieval_ms": 40.451,
+    "decrypt_ms": 0.142,
+    "total_ms": 82.768
+  },
+  {
+    "level": "L1",
+    "trial": 2,
+    "rtt_ms": 72.966,
+    "fetch_ms": 41.301,
+    "key_retrieval_ms": 29.61,
+    "decrypt_ms": 0.092,
+    "total_ms": 71.518
+  },
+  {
+    "level": "L1",
+    "trial": 3,
+    "rtt_ms": 126.817,
+    "fetch_ms": 83.658,
+    "key_retrieval_ms": 40.108,
+    "decrypt_ms": 0.144,
+    "total_ms": 124.524
+  },
+  {
+    "level": "L1",
+    "trial": 4,
+    "rtt_ms": 92.103,
+    "fetch_ms": 42.63,
+    "key_retrieval_ms": 46.639,
+    "decrypt_ms": 0.19,
+    "total_ms": 90.113
+  },
+  {
+    "level": "L1",
+    "trial": 5,
+    "rtt_ms": 89.49,
+    "fetch_ms": 42.09,
+    "key_retrieval_ms": 44.511,
+    "decrypt_ms": 0.144,
+    "total_ms": 87.58
+  },
+  {
+    "level": "L1",
+    "trial": 6,
+    "rtt_ms": 77.473,
+    "fetch_ms": 42.515,
+    "key_retrieval_ms": 32.678,
+    "decrypt_ms": 0.117,
+    "total_ms": 75.784
+  },
+  {
+    "level": "L1",
+    "trial": 7,
+    "rtt_ms": 113.909,
+    "fetch_ms": 83.984,
+    "key_retrieval_ms": 27.721,
+    "decrypt_ms": 0.086,
+    "total_ms": 112.268
+  },
+  {
+    "level": "L1",
+    "trial": 8,
+    "rtt_ms": 110.911,
+    "fetch_ms": 81.944,
+    "key_retrieval_ms": 26.411,
+    "decrypt_ms": 0.087,
+    "total_ms": 108.788
+  },
+  {
+    "level": "L1",
+    "trial": 9,
+    "rtt_ms": 128.858,
+    "fetch_ms": 82.848,
+    "key_retrieval_ms": 43.137,
+    "decrypt_ms": 0.095,
+    "total_ms": 126.425
+  },
+  {
+    "level": "L2",
+    "trial": 0,
+    "rtt_ms": 88.264,
+    "fetch_ms": 42.239,
+    "key_retrieval_ms": 43.932,
+    "decrypt_ms": 0.112,
+    "total_ms": 86.803
+  },
+  {
+    "level": "L2",
+    "trial": 1,
+    "rtt_ms": 84.038,
+    "fetch_ms": 41.921,
+    "key_retrieval_ms": 39.845,
+    "decrypt_ms": 0.105,
+    "total_ms": 82.356
+  },
+  {
+    "level": "L2",
+    "trial": 2,
+    "rtt_ms": 86.6,
+    "fetch_ms": 41.275,
+    "key_retrieval_ms": 42.235,
+    "decrypt_ms": 0.163,
+    "total_ms": 84.252
+  },
+  {
+    "level": "L2",
+    "trial": 3,
+    "rtt_ms": 85.028,
+    "fetch_ms": 41.712,
+    "key_retrieval_ms": 40.427,
+    "decrypt_ms": 0.107,
+    "total_ms": 82.799
+  },
+  {
+    "level": "L2",
+    "trial": 4,
+    "rtt_ms": 85.99,
+    "fetch_ms": 41.739,
+    "key_retrieval_ms": 40.941,
+    "decrypt_ms": 0.211,
+    "total_ms": 83.485
+  },
+  {
+    "level": "L2",
+    "trial": 5,
+    "rtt_ms": 83.711,
+    "fetch_ms": 41.341,
+    "key_retrieval_ms": 37.299,
+    "decrypt_ms": 0.163,
+    "total_ms": 79.375
+  },
+  {
+    "level": "L2",
+    "trial": 6,
+    "rtt_ms": 121.204,
+    "fetch_ms": 42.258,
+    "key_retrieval_ms": 76.036,
+    "decrypt_ms": 0.158,
+    "total_ms": 119.014
+  },
+  {
+    "level": "L2",
+    "trial": 7,
+    "rtt_ms": 83.937,
+    "fetch_ms": 41.644,
+    "key_retrieval_ms": 39.919,
+    "decrypt_ms": 0.11,
+    "total_ms": 82.143
+  },
+  {
+    "level": "L2",
+    "trial": 8,
+    "rtt_ms": 83.401,
+    "fetch_ms": 41.788,
+    "key_retrieval_ms": 39.434,
+    "decrypt_ms": 0.118,
+    "total_ms": 81.826
+  },
+  {
+    "level": "L2",
+    "trial": 9,
+    "rtt_ms": 83.975,
+    "fetch_ms": 41.475,
+    "key_retrieval_ms": 40.275,
+    "decrypt_ms": 0.121,
+    "total_ms": 82.335
+  },
+  {
+    "level": "L3",
+    "trial": 0,
+    "rtt_ms": 91.977,
+    "fetch_ms": 42.05,
+    "key_retrieval_ms": 42.74,
+    "decrypt_ms": 4.632,
+    "total_ms": 90.064
+  },
+  {
+    "level": "L3",
+    "trial": 1,
+    "rtt_ms": 90.277,
+    "fetch_ms": 41.736,
+    "key_retrieval_ms": 41.057,
+    "decrypt_ms": 4.858,
+    "total_ms": 88.35
+  },
+  {
+    "level": "L3",
+    "trial": 2,
+    "rtt_ms": 96.3,
+    "fetch_ms": 42.576,
+    "key_retrieval_ms": 41.329,
+    "decrypt_ms": 8.164,
+    "total_ms": 92.83
+  },
+  {
+    "level": "L3",
+    "trial": 3,
+    "rtt_ms": 84.285,
+    "fetch_ms": 42.136,
+    "key_retrieval_ms": 30.366,
+    "decrypt_ms": 8.404,
+    "total_ms": 81.709
+  },
+  {
+    "level": "L3",
+    "trial": 4,
+    "rtt_ms": 96.721,
+    "fetch_ms": 41.885,
+    "key_retrieval_ms": 43.015,
+    "decrypt_ms": 8.476,
+    "total_ms": 94.138
+  },
+  {
+    "level": "L3",
+    "trial": 5,
+    "rtt_ms": 94.899,
+    "fetch_ms": 42.698,
+    "key_retrieval_ms": 40.609,
+    "decrypt_ms": 8.351,
+    "total_ms": 92.416
+  },
+  {
+    "level": "L3",
+    "trial": 6,
+    "rtt_ms": 93.64,
+    "fetch_ms": 41.722,
+    "key_retrieval_ms": 40.626,
+    "decrypt_ms": 8.357,
+    "total_ms": 91.322
+  },
+  {
+    "level": "L3",
+    "trial": 7,
+    "rtt_ms": 93.085,
+    "fetch_ms": 42.261,
+    "key_retrieval_ms": 39.194,
+    "decrypt_ms": 8.497,
+    "total_ms": 90.721
+  },
+  {
+    "level": "L3",
+    "trial": 8,
+    "rtt_ms": 93.712,
+    "fetch_ms": 42.21,
+    "key_retrieval_ms": 40.427,
+    "decrypt_ms": 8.225,
+    "total_ms": 91.592
+  },
+  {
+    "level": "L3",
+    "trial": 9,
+    "rtt_ms": 93.092,
+    "fetch_ms": 41.584,
+    "key_retrieval_ms": 40.4,
+    "decrypt_ms": 8.203,
+    "total_ms": 90.939
+  }
+]

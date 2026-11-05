@@ -1,0 +1,14 @@
+{
+  "duration_s": 10.0,
+  "keys_generated": 763,
+  "keys_per_sec": 76.3,
+  "latency_stats": {
+    "n": 763,
+    "mean": 13.11,
+    "median": 12.402,
+    "p95": 14.96,
+    "min": 10.697,
+    "max": 42.728,
+    "stdev": 3.717
+  }
+}

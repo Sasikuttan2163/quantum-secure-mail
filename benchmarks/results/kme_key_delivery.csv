@@ -1,0 +1,5 @@
+key_material_bytes,keys_needed,requests_needed,delivered_bytes,mean_ms
+256,4,1,256,12.682
+1024,16,2,1024,26.503
+4096,64,7,4096,95.295
+16384,256,26,16384,373.343

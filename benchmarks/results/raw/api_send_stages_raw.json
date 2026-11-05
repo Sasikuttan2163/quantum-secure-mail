@@ -1,0 +1,434 @@
+[
+  {
+    "level": "L1",
+    "trial": 0,
+    "rtt_ms": 37.088,
+    "key_request_ms": 31.353,
+    "encryption_ms": 0.198,
+    "smtp_ms": 3.164,
+    "total_ms": 34.829
+  },
+  {
+    "level": "L1",
+    "trial": 1,
+    "rtt_ms": 28.837,
+    "key_request_ms": 23.381,
+    "encryption_ms": 0.304,
+    "smtp_ms": 3.206,
+    "total_ms": 27.055
+  },
+  {
+    "level": "L1",
+    "trial": 2,
+    "rtt_ms": 52.125,
+    "key_request_ms": 44.897,
+    "encryption_ms": 0.332,
+    "smtp_ms": 4.196,
+    "total_ms": 49.592
+  },
+  {
+    "level": "L1",
+    "trial": 3,
+    "rtt_ms": 43.762,
+    "key_request_ms": 35.309,
+    "encryption_ms": 0.313,
+    "smtp_ms": 5.196,
+    "total_ms": 40.999
+  },
+  {
+    "level": "L1",
+    "trial": 4,
+    "rtt_ms": 37.215,
+    "key_request_ms": 30.883,
+    "encryption_ms": 0.322,
+    "smtp_ms": 3.533,
+    "total_ms": 34.899
+  },
+  {
+    "level": "L1",
+    "trial": 5,
+    "rtt_ms": 28.877,
+    "key_request_ms": 24.65,
+    "encryption_ms": 0.177,
+    "smtp_ms": 1.997,
+    "total_ms": 26.919
+  },
+  {
+    "level": "L1",
+    "trial": 6,
+    "rtt_ms": 30.484,
+    "key_request_ms": 24.468,
+    "encryption_ms": 0.178,
+    "smtp_ms": 2.299,
+    "total_ms": 27.045
+  },
+  {
+    "level": "L1",
+    "trial": 7,
+    "rtt_ms": 28.018,
+    "key_request_ms": 23.884,
+    "encryption_ms": 0.224,
+    "smtp_ms": 2.218,
+    "total_ms": 26.432
+  },
+  {
+    "level": "L1",
+    "trial": 8,
+    "rtt_ms": 31.378,
+    "key_request_ms": 26.044,
+    "encryption_ms": 0.329,
+    "smtp_ms": 2.958,
+    "total_ms": 29.487
+  },
+  {
+    "level": "L1",
+    "trial": 9,
+    "rtt_ms": 30.472,
+    "key_request_ms": 25.968,
+    "encryption_ms": 0.206,
+    "smtp_ms": 2.187,
+    "total_ms": 28.507
+  },
+  {
+    "level": "L1",
+    "trial": 10,
+    "rtt_ms": 31.851,
+    "key_request_ms": 26.269,
+    "encryption_ms": 0.306,
+    "smtp_ms": 3.163,
+    "total_ms": 29.918
+  },
+  {
+    "level": "L1",
+    "trial": 11,
+    "rtt_ms": 45.923,
+    "key_request_ms": 38.968,
+    "encryption_ms": 0.305,
+    "smtp_ms": 3.836,
+    "total_ms": 43.275
+  },
+  {
+    "level": "L2",
+    "trial": 0,
+    "rtt_ms": 45.32,
+    "key_request_ms": 39.829,
+    "encryption_ms": 0.517,
+    "smtp_ms": 2.645,
+    "total_ms": 43.24
+  },
+  {
+    "level": "L2",
+    "trial": 1,
+    "rtt_ms": 31.642,
+    "key_request_ms": 26.13,
+    "encryption_ms": 0.361,
+    "smtp_ms": 2.752,
+    "total_ms": 29.492
+  },
+  {
+    "level": "L2",
+    "trial": 2,
+    "rtt_ms": 28.809,
+    "key_request_ms": 23.778,
+    "encryption_ms": 0.231,
+    "smtp_ms": 2.743,
+    "total_ms": 26.862
+  },
+  {
+    "level": "L2",
+    "trial": 3,
+    "rtt_ms": 28.206,
+    "key_request_ms": 23.456,
+    "encryption_ms": 0.19,
+    "smtp_ms": 2.693,
+    "total_ms": 26.456
+  },
+  {
+    "level": "L2",
+    "trial": 4,
+    "rtt_ms": 30.435,
+    "key_request_ms": 23.543,
+    "encryption_ms": 0.293,
+    "smtp_ms": 4.345,
+    "total_ms": 28.336
+  },
+  {
+    "level": "L2",
+    "trial": 5,
+    "rtt_ms": 45.783,
+    "key_request_ms": 39.79,
+    "encryption_ms": 0.302,
+    "smtp_ms": 3.281,
+    "total_ms": 43.541
+  },
+  {
+    "level": "L2",
+    "trial": 6,
+    "rtt_ms": 35.687,
+    "key_request_ms": 29.032,
+    "encryption_ms": 0.299,
+    "smtp_ms": 3.473,
+    "total_ms": 32.97
+  },
+  {
+    "level": "L2",
+    "trial": 7,
+    "rtt_ms": 30.169,
+    "key_request_ms": 25.199,
+    "encryption_ms": 0.219,
+    "smtp_ms": 2.571,
+    "total_ms": 28.1
+  },
+  {
+    "level": "L2",
+    "trial": 8,
+    "rtt_ms": 29.554,
+    "key_request_ms": 25.135,
+    "encryption_ms": 0.314,
+    "smtp_ms": 2.302,
+    "total_ms": 27.878
+  },
+  {
+    "level": "L2",
+    "trial": 9,
+    "rtt_ms": 35.284,
+    "key_request_ms": 28.398,
+    "encryption_ms": 0.369,
+    "smtp_ms": 4.22,
+    "total_ms": 33.152
+  },
+  {
+    "level": "L2",
+    "trial": 10,
+    "rtt_ms": 43.844,
+    "key_request_ms": 37.991,
+    "encryption_ms": 0.27,
+    "smtp_ms": 3.175,
+    "total_ms": 41.588
+  },
+  {
+    "level": "L2",
+    "trial": 11,
+    "rtt_ms": 32.678,
+    "key_request_ms": 28.012,
+    "encryption_ms": 0.2,
+    "smtp_ms": 2.695,
+    "total_ms": 31.01
+  },
+  {
+    "level": "L3",
+    "trial": 0,
+    "rtt_ms": 73.453,
+    "key_request_ms": 62.264,
+    "encryption_ms": 5.968,
+    "smtp_ms": 3.074,
+    "total_ms": 71.432
+  },
+  {
+    "level": "L3",
+    "trial": 1,
+    "rtt_ms": 44.779,
+    "key_request_ms": 32.414,
+    "encryption_ms": 7.298,
+    "smtp_ms": 2.879,
+    "total_ms": 42.756
+  },
+  {
+    "level": "L3",
+    "trial": 2,
+    "rtt_ms": 45.563,
+    "key_request_ms": 31.301,
+    "encryption_ms": 7.905,
+    "smtp_ms": 4.373,
+    "total_ms": 43.733
+  },
+  {
+    "level": "L3",
+    "trial": 3,
+    "rtt_ms": 33.412,
+    "key_request_ms": 22.972,
+    "encryption_ms": 5.876,
+    "smtp_ms": 2.728,
+    "total_ms": 31.729
+  },
+  {
+    "level": "L3",
+    "trial": 4,
+    "rtt_ms": 33.407,
+    "key_request_ms": 22.905,
+    "encryption_ms": 5.684,
+    "smtp_ms": 3.015,
+    "total_ms": 31.733
+  },
+  {
+    "level": "L3",
+    "trial": 5,
+    "rtt_ms": 38.931,
+    "key_request_ms": 26.052,
+    "encryption_ms": 8.274,
+    "smtp_ms": 2.868,
+    "total_ms": 37.354
+  },
+  {
+    "level": "L3",
+    "trial": 6,
+    "rtt_ms": 33.924,
+    "key_request_ms": 24.083,
+    "encryption_ms": 5.607,
+    "smtp_ms": 2.514,
+    "total_ms": 32.318
+  },
+  {
+    "level": "L3",
+    "trial": 7,
+    "rtt_ms": 37.012,
+    "key_request_ms": 23.121,
+    "encryption_ms": 9.134,
+    "smtp_ms": 2.84,
+    "total_ms": 35.24
+  },
+  {
+    "level": "L3",
+    "trial": 8,
+    "rtt_ms": 43.962,
+    "key_request_ms": 30.896,
+    "encryption_ms": 6.467,
+    "smtp_ms": 4.009,
+    "total_ms": 41.547
+  },
+  {
+    "level": "L3",
+    "trial": 9,
+    "rtt_ms": 49.925,
+    "key_request_ms": 35.258,
+    "encryption_ms": 9.426,
+    "smtp_ms": 2.956,
+    "total_ms": 47.818
+  },
+  {
+    "level": "L3",
+    "trial": 10,
+    "rtt_ms": 35.21,
+    "key_request_ms": 24.511,
+    "encryption_ms": 6.133,
+    "smtp_ms": 2.592,
+    "total_ms": 33.375
+  },
+  {
+    "level": "L3",
+    "trial": 11,
+    "rtt_ms": 37.04,
+    "key_request_ms": 25.873,
+    "encryption_ms": 5.703,
+    "smtp_ms": 2.961,
+    "total_ms": 34.671
+  },
+  {
+    "level": "L4",
+    "trial": 0,
+    "rtt_ms": 3.965,
+    "key_request_ms": 0.0,
+    "encryption_ms": 0.0,
+    "smtp_ms": 1.958,
+    "total_ms": 1.999
+  },
+  {
+    "level": "L4",
+    "trial": 1,
+    "rtt_ms": 3.116,
+    "key_request_ms": 0.0,
+    "encryption_ms": 0.0,
+    "smtp_ms": 1.643,
+    "total_ms": 1.674
+  },
+  {
+    "level": "L4",
+    "trial": 2,
+    "rtt_ms": 3.504,
+    "key_request_ms": 0.0,
+    "encryption_ms": 0.0,
+    "smtp_ms": 2.049,
+    "total_ms": 2.083
+  },
+  {
+    "level": "L4",
+    "trial": 3,
+    "rtt_ms": 2.982,
+    "key_request_ms": 0.0,
+    "encryption_ms": 0.0,
+    "smtp_ms": 1.678,
+    "total_ms": 1.706
+  },
+  {
+    "level": "L4",
+    "trial": 4,
+    "rtt_ms": 2.929,
+    "key_request_ms": 0.0,
+    "encryption_ms": 0.0,
+    "smtp_ms": 1.635,
+    "total_ms": 1.664
+  },
+  {
+    "level": "L4",
+    "trial": 5,
+    "rtt_ms": 2.911,
+    "key_request_ms": 0.0,
+    "encryption_ms": 0.0,
+    "smtp_ms": 1.63,
+    "total_ms": 1.657
+  },
+  {
+    "level": "L4",
+    "trial": 6,
+    "rtt_ms": 3.123,
+    "key_request_ms": 0.0,
+    "encryption_ms": 0.0,
+    "smtp_ms": 1.675,
+    "total_ms": 1.704
+  },
+  {
+    "level": "L4",
+    "trial": 7,
+    "rtt_ms": 3.381,
+    "key_request_ms": 0.0,
+    "encryption_ms": 0.0,
+    "smtp_ms": 1.968,
+    "total_ms": 1.998
+  },
+  {
+    "level": "L4",
+    "trial": 8,
+    "rtt_ms": 2.878,
+    "key_request_ms": 0.0,
+    "encryption_ms": 0.0,
+    "smtp_ms": 1.611,
+    "total_ms": 1.639
+  },
+  {
+    "level": "L4",
+    "trial": 9,
+    "rtt_ms": 2.8,
+    "key_request_ms": 0.0,
+    "encryption_ms": 0.0,
+    "smtp_ms": 1.572,
+    "total_ms": 1.599
+  },
+  {
+    "level": "L4",
+    "trial": 10,
+    "rtt_ms": 2.797,
+    "key_request_ms": 0.0,
+    "encryption_ms": 0.0,
+    "smtp_ms": 1.542,
+    "total_ms": 1.569
+  },
+  {
+    "level": "L4",
+    "trial": 11,
+    "rtt_ms": 3.027,
+    "key_request_ms": 0.0,
+    "encryption_ms": 0.0,
+    "smtp_ms": 1.719,
+    "total_ms": 1.746
+  }
+]
